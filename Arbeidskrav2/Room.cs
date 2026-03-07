@@ -52,8 +52,6 @@ public abstract class Room
         IsAvailable = true;
         this.MaxGuests = MaxGuests;
     }
-    
-    
 
     public abstract void DisplayRoomInfo();
     
