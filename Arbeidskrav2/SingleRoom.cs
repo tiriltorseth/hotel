@@ -9,8 +9,7 @@ public class SingleRoom : Room
         get { return hasDesk; }
         protected set { hasDesk = value; }
     }
-
-
+    
 
     public SingleRoom(string RoomType, decimal PricePerNight, int MaxGuests)
         : base(RoomType, 800, 1)
