@@ -10,8 +10,8 @@ public class DoubleRoom : Room
         protected set { hasExtraBed = value; }
     }
     
-    public DoubleRoom(string RoomType, decimal PricePerNight, int MaxGuests)
-        : base(RoomType, 1200, 2)
+    public DoubleRoom(string roomID, string RoomType, decimal PricePerNight, int MaxGuests)
+        : base(roomID, RoomType, 1200, 2)
     {
         HasExtraBed = true;
     }

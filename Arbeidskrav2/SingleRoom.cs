@@ -11,8 +11,8 @@ public class SingleRoom : Room
     }
     
 
-    public SingleRoom(string RoomType, decimal PricePerNight, int MaxGuests)
-        : base(RoomType, 800, 1)
+    public SingleRoom(string roomID,string RoomType, decimal PricePerNight, int MaxGuests)
+        : base(roomID, RoomType, 800, 1)
     {
         HasDesk = true;
     }

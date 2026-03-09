@@ -1,4 +1,4 @@
-Bruk av AI i Arbeidskrav 2:
+# Bruk av AI i Arbeidskrav 2:
 
 **Prompt:**
 Hva er galt med denne? d står at den skal være abstrakt public abstract decimal GetDiscount(decimal basePrice) { return basePrice; }

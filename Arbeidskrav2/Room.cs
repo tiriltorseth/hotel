@@ -1,16 +1,26 @@
+using System.Text.RegularExpressions;
+
 namespace Arbeidskrav2;
 
 public abstract class Room
 {
-    private static int roomCounter = 0;
     private readonly string roomID;
     
-    public string RoomID => roomID;
-
     private string roomType;
     private decimal pricePerNight;
     private bool isAvailable;
     private int maxGuests;
+    
+    public string RoomID
+    {
+        get { return roomID; }
+        private set
+        {
+            var pattern = @"^\d{3}$";
+            if (value == null || !(Regex.IsMatch(value, pattern)))
+                throw new ArgumentException("Room ID cannot be null");
+        }
+    }
 
     public string RoomType
     {
@@ -43,10 +53,10 @@ public abstract class Room
     }
 
 
-    protected Room(string RoomType, decimal PricePerNight, int MaxGuests)
+    protected Room(string roomID, string RoomType, decimal PricePerNight, int MaxGuests)
     {
-        roomCounter++;
-        roomID = "R" +  roomCounter.ToString("D3");
+       //Fikse på romnummer identifikator
+        this.RoomID = roomID;
         this.RoomType = RoomType;
         this.PricePerNight = PricePerNight;
         IsAvailable = true;

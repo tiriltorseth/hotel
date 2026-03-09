@@ -16,8 +16,8 @@ public class Suite : Room
         protected set { hasLounge = value; }
     }
     
-    public Suite(string RoomType, decimal PricePerNight, int MaxGuests)
-        : base(RoomType, 3500, 4)
+    public Suite(string roomID, string RoomType, decimal PricePerNight, int MaxGuests)
+        : base(roomID, RoomType, 3500, 4)
     {
         HasJacuzzi = true;
         HasLounge = true;
