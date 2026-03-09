@@ -97,10 +97,20 @@ fordi det blir:
 
     decimal * decimal
 
-**Prompt:**
+**Prompt:** Feilsøk:         
+    
+    var showCardNumber = cardNumber.Substring(Length - 4, 4);
 
 **Svar:**
+Problemet er denne delen:
 
+Length - 4
+
+Length alene finnes ikke her. Length må tilhøre en string. Du må derfor bruke cardNumber.Length.
+
+Riktig kode
+
+    var showCardNumber = cardNumber.Substring(cardNumber.Length - 4, 4);
 **Prompt:**
 
 **Svar:**
