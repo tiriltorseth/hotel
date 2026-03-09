@@ -111,13 +111,47 @@ Length alene finnes ikke her. Length må tilhøre en string. Du må derfor bruke
 Riktig kode
 
     var showCardNumber = cardNumber.Substring(cardNumber.Length - 4, 4);
-**Prompt:**
+
+**Prompt:** I en feilsøk av VippsPayment: 
 
 **Svar:**
+GetPaymentInfo() bør ikke skrive til konsollen
 
-**Prompt:**
+Metoden i interfacet skal returnere en beskrivelse, ikke skrive den ut.
+Oppgaven sier at den skal returnere info om betalingsmetoden.
+
+Arbeidskrav2_HotellSystem
+
+Du har nå:
+
+    Console.WriteLine($"Customer paid with Vipps: {PhoneNumber}");
+    return PhoneNumber;
+
+Dette blander to ting:
+
+logging (Console.WriteLine)
+
+informasjon (return)
+
+Bedre:
+
+    public string GetPaymentInfo()
+    {
+    return $"Vipps {PhoneNumber}";
+    }
+
+Hvis du vil skrive til konsollen kan det gjøres et annet sted i programmet.
+
+**Prompt:** I samme feilsøk av VippsPayment:
 
 **Svar:**
+Liten forbedring (unngå null-crash)
+
+Hvis value er null kan Regex.IsMatch krasje. En trygg variant er:
+
+    if (value == null || !Regex.IsMatch(value, pattern))
+    throw new ArgumentException("Invalid phone number. Please insert in this format ## ## ## ##");
+
 
 **Prompt:**
 
