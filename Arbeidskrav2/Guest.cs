@@ -42,6 +42,8 @@ public abstract class Guest
         }
     }
     
+    public abstract int MaxBookings { get; }
+    
     public List<Booking> ActiveBookings { get; }
 
     protected Guest(string Name, string Email)
@@ -52,6 +54,9 @@ public abstract class Guest
         this.Email = Email;
         ActiveBookings = new List<Booking>(); 
     }
+    
+    // Felles metode som sjekker om gjesten kan booke mer
+
 
     public abstract decimal GetDiscount(decimal basePrice);
 
