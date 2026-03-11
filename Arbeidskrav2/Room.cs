@@ -4,7 +4,7 @@ namespace Arbeidskrav2;
 
 public abstract class Room
 {
-    private readonly string roomID;
+    private string roomID;
     
     private string roomType;
     private decimal pricePerNight;
@@ -19,6 +19,8 @@ public abstract class Room
             var pattern = @"^\d{3}$";
             if (value == null || !(Regex.IsMatch(value, pattern)))
                 throw new ArgumentException("Room ID cannot be null");
+
+            roomID = value;
         }
     }
 
