@@ -153,9 +153,27 @@ Hvis value er null kan Regex.IsMatch krasje. En trygg variant er:
     throw new ArgumentException("Invalid phone number. Please insert in this format ## ## ## ##");
 
 
-**Prompt:**
+**Prompt:** Sitter litt fast med CalculatePrice() metoden, får den liksom ikke helt riktig, kan du skrive pseudokode uten kode, men med logikk så jeg får litt tips?
+
 
 **Svar:**
+
+Her er pseudokoden for logikken, uten C#-syntaks:
+
+METHOD CalculateTotalPrice
+
+    IF CheckOutDate <= CheckInDate
+        THROW error "Invalid dates"
+
+    nights = difference between CheckOutDate and CheckInDate (in days)
+
+    basePrice = nights * Room.PricePerNight
+
+    finalPrice = Guest.GetDiscount(basePrice)
+
+    RETURN finalPrice
+
+END METHOD
 
 **Prompt:**
 

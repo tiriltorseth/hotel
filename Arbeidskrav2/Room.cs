@@ -44,7 +44,7 @@ public abstract class Room
     public bool IsAvailable
     {
         get { return isAvailable; }
-        protected set { isAvailable = value; }
+        set { isAvailable = value; }
     }
 
     
