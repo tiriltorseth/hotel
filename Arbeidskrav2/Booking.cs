@@ -7,6 +7,8 @@ public class Booking
 
     public Room room { get; }
     public Guest guest { get; }
+    
+    public string BookingID => bookingID;
 
     private DateTime checkInDate;
     private DateTime checkOutDate;

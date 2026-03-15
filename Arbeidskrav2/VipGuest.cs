@@ -22,5 +22,10 @@ public class VipGuest : Guest
     {
         return basePrice * 0.85m;
     }
+    
+    public override bool CanBook()
+    {
+        return ActiveBookings.Count < MaxBookings;
+    }
 
 }

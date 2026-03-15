@@ -41,31 +41,94 @@ public class Hotel
         return guest;
     }
 
-    /*
-    public GetAvailableRooms(DateTime checkIn, DateTime checkOut)
+    
+    // I denne må det legges til checkin og checkout så kun tilgjengelige rom vises innenfor en viss dato
+    public void GetAvailableRooms(DateTime checkIn, DateTime checkOut)
     {
-        //viser alle ledige rom i perioden
+        foreach (var room in RoomRegister)
+        {
+            if (room.IsAvailable)
+            {
+                continue;
+            }
+            else
+            {
+                room.DisplayRoomInfo();
+            }
+        }
     }
 
-    public CreateBooking(string guestID, string roomID, DateTime checkIn,
+    public Booking? CreateBooking(string guestID, string roomID, DateTime checkIn,
         DateTime checkOut, IPayable payable)
     {
-        //sjekker at gjesten kan booke, at rommet er
-        //ledig, oppretter booking og gjennomfører betaling
+        var guest = GuestRegister.FirstOrDefault(g => g.GuestID == guestID);
+
+        if (guest == null)
+        {
+            Console.WriteLine($"Guest [{guestID}] does not exist.");
+            return null;
+        }
+
+        if (!guest.CanBook())
+        {
+            Console.WriteLine($"Guest [{guest.Email}] can not book anymore visits");
+            return null;
+        }
+
+        var room = RoomRegister.FirstOrDefault(r => r.RoomID == roomID);
+
+        if (room == null)
+        {
+            Console.WriteLine($"Room {roomID} does not exist.");
+            return null;
+        }
+
+        if (!room.IsAvailable)
+        {
+            Console.WriteLine($"Room [{roomID}] is not available");
+            return null;
+        }
+        
+        var booking = new Booking(room, guest, checkIn, checkOut, payable);
+        
+        if (booking.IsPaid)
+        {
+            guest.ActiveBookings.Add(booking);
+            BookingHistoryRegister.Add(booking);
+        }
+        else
+        {
+            throw new ArgumentException("Payment failed. Booking is not paid.");
+            return null;
+        }
+
+        return booking;
     }
 
-    public CancelBooking(string bookingID)
+
+    public Booking? CancelBooking(string bookingID)
+    
     {
-        // kansellerer booking og setter rommet som ledig igjen
+        var booking = BookingHistoryRegister.FirstOrDefault(b => b.BookingID == bookingID);
+
+        if (booking == null)
+        {
+            Console.WriteLine($"Booking [{bookingID}] does not exist.");
+            return null;
+        }
+        
+        booking.guest.ActiveBookings.Remove(booking);
+        BookingHistoryRegister.Remove(booking);
+        
+        Console.WriteLine($"Booking [{bookingID}] has been cancelled.");
+        return booking;
+        
     }
+
 
     public GetGuestBookings(string guestID)
     {
-        // viser alle aktive bookinger med totalpriser
         
-        // Systemet skal håndtere feil på en god måte, for eksempel hvis gjesten prøver å booke et opptatt
-        // rom, eller hvis en RegularGuest allerede har 3 aktive bookinger.
     }
-    */0
 
 }

@@ -16,4 +16,10 @@ public class RegularGuest : Guest
         return basePrice;
     }
 
+    public override bool CanBook()
+    {
+        return ActiveBookings.Count < MaxBookings;
+    }
+    
+
 }

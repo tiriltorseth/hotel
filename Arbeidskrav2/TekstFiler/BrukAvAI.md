@@ -467,14 +467,81 @@ før du setter:
         }
     }
 
+**Prompt:** Kan du hjelpe meg med selve betalingsdelen i CreateBooking? Dette er det jeg har hittil og jeg har ikke peiling
+på neste steg: decimal PriceForStay = Booking.CalculateTotalPrice();,
+
+
+**Svar:**Logikken i kodeform (den lille delen du mangler)
+
+Dette er vanlig måte å gjøre det på:
+    
+    decimal priceForStay = booking.CalculateTotalPrice();
+    
+    bool paymentSuccess = payment.ProcessPayment(priceForStay);
+    
+    if (!paymentSuccess)
+    {
+    throw new Exception("Payment failed");
+    }
+
 **Prompt:**
 
+hvorfor er det feil o guest her public Booking? CancelBooking(string bookingID)
+
+    {
+        var guest = GuestRegister.FirstOrDefault(g => g.GuestID == guestID);
+
+        var booking = BookingHistoryRegister.FirstOrDefault(b => b.BookingID == bookingID);
+
+        if (booking == null)
+        {
+            Console.WriteLine($"Booking [{bookingID}] does not exist.");
+            return null;
+        }
+        
+        guest.ActiveBookings.Remove(booking);
+        BookingHistoryRegister.Remove(booking);
+        
+        Console.WriteLine($"Booking [{bookingID}] has been cancelled.");
+        return booking;
+        
+    }
 
 **Svar:**
 
-**Prompt:**
+Feilen med guest her skyldes at du bruker en variabel som ikke finnes i metoden.
 
-**Svar:**
+Se på denne linjen:
+
+    var guest = GuestRegister.FirstOrDefault(g => g.GuestID == guestID);
+
+Problemet er guestID.
+
+I metodesignaturen din har du bare:
+
+    CancelBooking(string bookingID)
+
+Det betyr at metoden ikke får noe guestID som parameter. Derfor vet ikke kompilatoren hva guestID er.
+
+Hvorfor du egentlig ikke trenger å finne gjesten her
+
+Du har allerede funnet:
+
+    var booking = BookingHistoryRegister.FirstOrDefault(b => b.BookingID == bookingID);
+
+Og i Booking har du en referanse til gjesten:
+
+booking.Guest
+
+Booking-klassen inneholder jo:
+
+rom
+
+gjest
+
+datoer
+
+Så du kan hente gjesten direkte fra bookingen.
 
 **Prompt:**
 

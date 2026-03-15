@@ -6,6 +6,8 @@ public abstract class Guest
 {
     private static int guestCounter = 0;
     private readonly string guestID;
+    
+    public string GuestID{ get { return guestID; } }
 
     private string name;
     private string email;
@@ -59,5 +61,7 @@ public abstract class Guest
 
 
     public abstract decimal GetDiscount(decimal basePrice);
+    
+    public abstract bool CanBook();
 
 }
