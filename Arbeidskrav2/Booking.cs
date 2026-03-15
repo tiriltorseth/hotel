@@ -1,5 +1,3 @@
-using System.Reflection.Metadata.Ecma335;
-
 namespace Arbeidskrav2;
 
 public class Booking
@@ -10,61 +8,71 @@ public class Booking
     public Room room { get; }
     public Guest guest { get; }
 
-    private DateTime checkIn;
-    private DateTime checkOut;
+    private DateTime checkInDate;
+    private DateTime checkOutDate;
 
-    private IPayable payable;
+    private IPayable paymentMethod;
 
-    public DateTime CheckIn
+
+    public DateTime CheckInDate
     {
-        get { return checkIn; }
+        get { return checkInDate; }
         protected set
         {
-            if (DateTime.Today <= checkIn)
-                throw new ArgumentException("Checkin cannot be before checkin date!");
-            checkIn = value;
+            checkInDate = value;
         }
     }
 
-    public DateTime CheckOut
+    public DateTime CheckOutDate
     {
-        get { return checkOut; }
+        get { return checkOutDate; }
         protected set
         {
-            if (checkOut <= checkIn)
+            if (value <= checkInDate)
                 throw new ArgumentException("Checkout date cannot be before checkin date!");
             
-            checkOut = value;
+            checkOutDate = value;
         }
     }
 
-    public Booking(Room room, Guest guest, DateTime checkIn, DateTime checkOut)
+    public Booking(Room room, Guest guest, DateTime checkInDate, DateTime checkOutDate, IPayable payment)
     {
         bookingCounter++;
         bookingID = "BK" + bookingCounter.ToString("D3");
         this.room = room;
         this.guest = guest;
-        this.checkIn = checkIn;
-        this.checkOut = checkOut;
+        
+        CheckInDate = checkInDate;
+        CheckOutDate = checkOutDate;
+        
+        paymentMethod = payment;
+        ProcessPayment();
     }
 
-    public bool IsPaid()
+    
+    private void ProcessPayment()
     {
-        if (!(payable == null))
+        decimal amount = CalculateTotalPrice();
+
+        if (paymentMethod.ProcessPayment(amount))
         {
-            Console.WriteLine($"Hotel has been paid!");
-            return true;
+            IsPaid = true;
+            Console.WriteLine($"Payment successful using {paymentMethod.GetPaymentInfo()}");
         }
-
-        return false;
+        else
+        {
+            throw new Exception("Payment failed!");
+        }
     }
-
+    
+    public bool IsPaid { get; private set; } = false;
+    
     public decimal CalculateTotalPrice()
     {
-        if (checkOut <= checkIn)
+        if (checkOutDate <= checkInDate)
             throw new ArgumentException("Checkout date is before checkin date!");
         
-        TimeSpan spentNights = checkOut.Subtract(checkIn);
+        TimeSpan spentNights = checkOutDate.Subtract(checkInDate);
 
         decimal basePrice = spentNights.Days * room.PricePerNight;
 
@@ -75,39 +83,35 @@ public class Booking
 
     public void CheckIn()
     {
-        if (IsPaid() is false)
+        if (!IsPaid)
         {
             throw new ArgumentException($"{bookingID} has not been paid. Please pay before checking in.");
         }
 
+        if (DateTime.Today < checkInDate)
+        {
+            throw new ArgumentException("Cannot check in before the checkin date");
+        }
+        
         if (room.IsAvailable is false)
         {
             throw new InvalidOperationException($"Room {room.RoomID} is not available. Please choose another room.");
         }
         
-        // Sjekk om sjekkinndato er samme dag eller etter satt booking
-        
-        
-
         room.IsAvailable = false;
+        Console.WriteLine($"Booking [{bookingID}] has been checked in!");
         
-        
-
-        /*
-        
-           Marker rommet som opptatt
-
-           Når innsjekk skjer, settes rommets tilgjengelighet til ikke tilgjengelig.
-
-           Logg innsjekken
-
-           Skriv en melding i konsollen eller loggen om at gjesten har sjekket inn på rommet.
-         */
     }
 
-    public CheckOut()
+    public void CheckOut()
     {
+        if (room.IsAvailable)
+        {
+            Console.WriteLine($"This room is already available!");
+        }
         
+        room.IsAvailable = true;
+        Console.WriteLine($"Booking [{bookingID}] has been checked out!");
     }
 
 }

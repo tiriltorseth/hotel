@@ -66,6 +66,6 @@ public class Hotel
         // Systemet skal håndtere feil på en god måte, for eksempel hvis gjesten prøver å booke et opptatt
         // rom, eller hvis en RegularGuest allerede har 3 aktive bookinger.
     }
-    */
+    */0
 
 }
