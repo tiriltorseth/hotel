@@ -101,13 +101,20 @@ public class Hotel
             throw new ArgumentException("Payment failed. Booking is not paid.");
             return null;
         }
-
+        
+        Console.WriteLine($"Booking created:" + 
+                          $"\nRoom [{room.RoomID}]" +
+                          $"\nGuest [{guest.Email}]" +
+                          $"\nCheck in [{booking.CheckInDate}]" +
+                          $"\nCheck out [{booking.CheckOutDate}]" +
+                          $"\nPayment Method [{payable}]" +
+                          $"\nPrice [{booking.CalculateTotalPrice()}] NOK");
         return booking;
+        
     }
 
 
     public Booking? CancelBooking(string bookingID)
-    
     {
         var booking = BookingHistoryRegister.FirstOrDefault(b => b.BookingID == bookingID);
 
@@ -126,9 +133,28 @@ public class Hotel
     }
 
 
-    public GetGuestBookings(string guestID)
+    public void GetGuestBookings(string guestID)
     {
-        
+        var guest = GuestRegister.FirstOrDefault(g => g.GuestID == guestID);
+
+        if (guest == null)
+        {
+            Console.WriteLine($"Guest [{guestID}] does not exist.");
+            return;
+        }
+
+        if (!guest.ActiveBookings.Any())
+        {
+            Console.WriteLine($"Guest [{guestID}] does not have any active bookings.");
+            return;
+        }
+    
+        Console.WriteLine($"Bookings for Guest [{guest.Name}]:");
+        foreach (var booking in guest.ActiveBookings)
+        {
+            Console.WriteLine($"\nBooking ID: {booking.BookingID}" +
+                              $"\nTotal Price: {booking.CalculateTotalPrice()}");
+        }
     }
 
 }
