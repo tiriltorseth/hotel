@@ -18,7 +18,7 @@ public abstract class Room
         {
             var pattern = @"^\d{3}$";
             if (value == null || !(Regex.IsMatch(value, pattern)))
-                throw new ArgumentException("Room ID cannot be null");
+                throw new ArgumentException("Room ID must be a 3 digit number (e.g 101)");
 
             roomID = value;
         }
@@ -55,14 +55,13 @@ public abstract class Room
     }
 
 
-    protected Room(string roomID, string RoomType, decimal PricePerNight, int MaxGuests)
+    protected Room(string roomID, string roomType, decimal pricePerNight, int maxGuests)
     {
-       //Fikse på romnummer identifikator
         this.RoomID = roomID;
-        this.RoomType = RoomType;
-        this.PricePerNight = PricePerNight;
+        this.RoomType = roomType;
+        this.PricePerNight = pricePerNight;
         IsAvailable = true;
-        this.MaxGuests = MaxGuests;
+        this.MaxGuests = maxGuests;
     }
 
     public abstract void DisplayRoomInfo();
