@@ -3,9 +3,7 @@ namespace Arbeidskrav2;
 public class Hotel
 {
     private string hotelName;
-
-    private List<Room> roomRegister;
-
+    
     public List<Room> RoomRegister { get; private set; } = new List<Room>();
     public List<Guest> GuestRegister { get; private set; } = new List<Guest>();
     public List<Booking> BookingHistoryRegister { get; private set; } = new List<Booking>();
