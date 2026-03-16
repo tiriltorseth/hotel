@@ -7,17 +7,20 @@ public class DoubleRoom : Room
     public bool HasExtraBed
     {
         get { return hasExtraBed; }
-        protected set { hasExtraBed = value; }
+        private set { hasExtraBed = value; }
     }
     
-    public DoubleRoom(string roomID, string RoomType, decimal PricePerNight, int MaxGuests)
-        : base(roomID, RoomType, 1200, 2)
+    public DoubleRoom(string roomID, string roomType)
+        : base(roomID, roomType, 1200, 2)
     {
+        RoomType = "DoubleRoom";
         HasExtraBed = true;
     }
 
     public override void DisplayRoomInfo()
     {
-        /// Her skriver du ut informasjonen fra menyen, kall på denne metoden
+        Console.WriteLine($"[{RoomID}] {RoomType} - " +
+                          $"{PricePerNight} kr/night - Max {MaxGuests} guest - " +
+                          $"Has Extra Bed: {(HasExtraBed ? "Yes" : "No")}");
     }
 }

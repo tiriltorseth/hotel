@@ -543,10 +543,20 @@ datoer
 
 Så du kan hente gjesten direkte fra bookingen.
 
-**Prompt:**
+**Prompt:** Hvordan kan jeg fp denne inn i en console writeline så jeg skriver ut yes istedenfor true?
+
+    if (HasDesk)
+    {
+    Console.WriteLine("HasDesk: Yes");
+    }
+    else
+    {
+    Console.WriteLine("HasDesk: No");
+    }
 
 **Svar:**
 
+    Console.WriteLine($"HasDesk: {(HasDesk ? "Yes" : "No")}");
 **Prompt:**
 
 **Svar:**

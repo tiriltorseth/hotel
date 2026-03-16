@@ -7,18 +7,22 @@ public class SingleRoom : Room
     public bool HasDesk
     {
         get { return hasDesk; }
-        protected set { hasDesk = value; }
+        private set { hasDesk = value; }
     }
     
 
-    public SingleRoom(string roomID,string RoomType, decimal PricePerNight, int MaxGuests)
-        : base(roomID, RoomType, 800, 1)
+    public SingleRoom(string roomID,string roomType)
+        : base(roomID, roomType, 800, 1)
     {
+        RoomType = "SingleRoom";
         HasDesk = true;
     }
 
     public override void DisplayRoomInfo()
     {
-        /// Her skriver du ut informasjonen fra menyen, kall på denne metoden
+        Console.WriteLine($"[{RoomID}] {RoomType} - " +
+                          $"{PricePerNight} kr/night - Max {MaxGuests} guest - " +
+                          $"Has Desk: {(HasDesk ? "Yes" : "No")}");
+        
     }
 }
