@@ -8,23 +8,27 @@ public class Suite : Room
     public bool HasJacuzzi
     {
         get { return hasJacuzzi; }
-        protected set { hasJacuzzi = value; }
+        private set { hasJacuzzi = value; }
     }
     
     public bool HasLounge{
         get { return hasLounge; }
-        protected set { hasLounge = value; }
+        private set { hasLounge = value; }
     }
     
-    public Suite(string roomID, string RoomType, decimal PricePerNight, int MaxGuests)
-        : base(roomID, RoomType, 3500, 4)
+    public Suite(string roomID, string roomType)
+        : base(roomID, roomType, 3500, 4)
     {
+        RoomType = "Suite";
         HasJacuzzi = true;
         HasLounge = true;
     }
 
     public override void DisplayRoomInfo()
     {
-        /// Her skriver du ut informasjonen fra menyen, kall på denne metoden
+        Console.WriteLine($"[{RoomID}] {RoomType} - " +
+                          $"{PricePerNight} kr/night - Max {MaxGuests} guest - " +
+                          $"Has Jacuzzi: {(HasJacuzzi ? "Yes" : "No")} - "+
+                          $"Has Lounge: {(HasLounge ? "Yes" : "No")}");
     }
 }
