@@ -559,9 +559,52 @@ Så du kan hente gjesten direkte fra bookingen.
     Console.WriteLine($"HasDesk: {(HasDesk ? "Yes" : "No")}");
 **Prompt:**
 
-**Svar:**
+**Svar:** I en feilsøk av Guest: Feil logikk i email-validering
 
-**Prompt:**
+if (!(Regex.IsMatch(value, checkEmail) || value.Contains(".")))
+
+Problemer:
+
+value.Contains(".") gjør at nesten alle strenger blir godkjent
+
+regexen blir dermed nesten irrelevant
+
+Feil regex
+
+Regexen din:
+
+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}
+
+. betyr hvilket som helst tegn i regex.
+
+Du burde hatt:
+
+\.
+
+ellers matcher den feil ting.
+
+**Prompt:** Riktig regex blir: 
+
+    string checkEmail = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+
+Fiks logikken i valideringen
+
+Du har nå:
+
+    if (!(Regex.IsMatch(value, checkEmail) || value.Contains(".")))
+
+Problemet:
+
+    || value.Contains(".") gjør at nesten alt blir godkjent.
+
+Du trenger kun regexen.
+
+Riktig løsning:
+
+    if (!Regex.IsMatch(value, checkEmail))
+    {
+    throw new ArgumentException("Invalid email format.");
+    }
 
 **Svar:**
 

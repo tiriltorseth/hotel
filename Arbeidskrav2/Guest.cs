@@ -15,7 +15,7 @@ public abstract class Guest
     public string Name
     {
         get { return name; }
-        set
+        protected set
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("Name can not be empty.");
@@ -30,17 +30,19 @@ public abstract class Guest
     public string Email
     {
         get { return email; }
-        set
+        protected set
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("Email can not be empty.");
             
-            string checkEmail = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$";
-
-            if (!(Regex.IsMatch(value, checkEmail) || value.Contains(".")))
-            {
-                Console.WriteLine("Invalid email!");
-            }
+            string checkEmail = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+            
+            if (!(Regex.IsMatch(value, checkEmail)))
+                throw new ArgumentException("Invalid email!");
+           
+            
+                
+            email = value;
         }
     }
     
@@ -48,17 +50,15 @@ public abstract class Guest
     
     public List<Booking> ActiveBookings { get; }
 
-    protected Guest(string Name, string Email)
+    protected Guest(string name, string email)
     {
         guestCounter++;
         guestID = "G" + guestCounter.ToString("D3");
-        this.Name = Name;
-        this.Email = Email;
+        this.Name = name;
+        this.Email = email;
         ActiveBookings = new List<Booking>(); 
     }
     
-    // Felles metode som sjekker om gjesten kan booke mer
-
 
     public abstract decimal GetDiscount(decimal basePrice);
     
