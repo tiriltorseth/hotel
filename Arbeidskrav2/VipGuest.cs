@@ -9,7 +9,7 @@ public class VipGuest : Guest
     public int LoyaltyPoints
     {
         get { return loyaltyPoints; }
-        protected set { loyaltyPoints = value; }
+        set { loyaltyPoints = value; }
     }
 
     public VipGuest(string name, string email)

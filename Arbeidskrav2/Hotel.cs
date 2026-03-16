@@ -1,15 +1,14 @@
-using System.Reflection.Metadata;
-using System.Reflection.Metadata.Ecma335;
-
 namespace Arbeidskrav2;
 
 public class Hotel
 {
     private string hotelName;
 
-    public List<Room> RoomRegister = new List<Room>();
-    public List<Guest> GuestRegister = new List<Guest>();
-    public List<Booking> BookingHistoryRegister = new List<Booking>();
+    private List<Room> roomRegister;
+
+    public List<Room> RoomRegister { get; private set; } = new List<Room>();
+    public List<Guest> GuestRegister { get; private set; } = new List<Guest>();
+    public List<Booking> BookingHistoryRegister { get; private set; } = new List<Booking>();
 
     /// <summary>
     /// Hotell navn, sjekker at det er mer enn 3 karakterer og ikke null
@@ -19,10 +18,8 @@ public class Hotel
         get { return hotelName; }
         private set
         {
-            if (value.Length < 3 )
+            if (string.IsNullOrWhiteSpace(value) || (value.Length < 3) )
                 throw new ArgumentException("Hotel name must be at least 3 characters long.");
-            if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException("Hotelname cannot be empty.");
             hotelName = value;
         }
     }
@@ -32,6 +29,9 @@ public class Hotel
     /// </summary>
     public Guest RegisterGuest(Guest guest)
     {
+        if (guest == null)
+            throw new ArgumentException("Guest cannot be null.");
+        
         if (GuestRegister.Any(g => g.Email == guest.Email))
         {
             return null;
@@ -47,7 +47,7 @@ public class Hotel
     {
         foreach (var room in RoomRegister)
         {
-            if (room.IsAvailable)
+            if (!room.IsAvailable)
             {
                 continue;
             }
@@ -95,11 +95,16 @@ public class Hotel
         {
             guest.ActiveBookings.Add(booking);
             BookingHistoryRegister.Add(booking);
+            
+            if (guest is VipGuest vipGuest)
+            {
+                vipGuest.LoyaltyPoints += 10;
+            }
         }
         else
         {
             throw new ArgumentException("Payment failed. Booking is not paid.");
-            return null;
+            
         }
         
         Console.WriteLine($"Booking created:" + 
@@ -107,7 +112,7 @@ public class Hotel
                           $"\nGuest [{guest.Email}]" +
                           $"\nCheck in [{booking.CheckInDate}]" +
                           $"\nCheck out [{booking.CheckOutDate}]" +
-                          $"\nPayment Method [{payable}]" +
+                          $"\nPayment Method [{payable.GetPaymentInfo()}]" +
                           $"\nPrice [{booking.CalculateTotalPrice()}] NOK");
         return booking;
         
@@ -126,6 +131,8 @@ public class Hotel
         
         booking.guest.ActiveBookings.Remove(booking);
         BookingHistoryRegister.Remove(booking);
+        booking.room.IsAvailable = true;
+
         
         Console.WriteLine($"Booking [{bookingID}] has been cancelled.");
         return booking;
