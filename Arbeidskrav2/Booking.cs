@@ -39,6 +39,10 @@ public class Booking
 
     public Booking(Room room, Guest guest, DateTime checkInDate, DateTime checkOutDate, IPayable payment)
     {
+        if (room == null) throw new ArgumentNullException(nameof(room));
+        if (guest == null) throw new ArgumentNullException(nameof(guest));
+        if (payment == null) throw new ArgumentNullException(nameof(payment));
+
         bookingCounter++;
         bookingID = "BK" + bookingCounter.ToString("D3");
         this.room = room;
@@ -71,11 +75,14 @@ public class Booking
     
     public decimal CalculateTotalPrice()
     {
-        if (checkOutDate <= checkInDate)
+        if (CheckOutDate <= CheckInDate)
             throw new ArgumentException("Checkout date is before checkin date!");
         
-        TimeSpan spentNights = checkOutDate.Subtract(checkInDate);
+        TimeSpan spentNights = CheckOutDate.Subtract(CheckInDate);
 
+        if (spentNights.Days <= 0)
+            throw new ArgumentException("Booking must be atleast one nights.");
+        
         decimal basePrice = spentNights.Days * room.PricePerNight;
 
         decimal finalPrice = guest.GetDiscount(basePrice);
@@ -88,9 +95,10 @@ public class Booking
         if (!IsPaid)
         {
             throw new ArgumentException($"{bookingID} has not been paid. Please pay before checking in.");
+           
         }
 
-        if (DateTime.Today < checkInDate)
+        if (DateTime.Today < CheckInDate)
         {
             throw new ArgumentException("Cannot check in before the checkin date");
         }
@@ -109,11 +117,12 @@ public class Booking
     {
         if (room.IsAvailable)
         {
-            Console.WriteLine($"This room is already available!");
+            throw new InvalidOperationException($"This room is already available. Cannot check out!");
+            return;
         }
         
         room.IsAvailable = true;
-        Console.WriteLine($"Booking [{bookingID}] has been checked out!");
+        Console.WriteLine($"Booking [{bookingID}] has been checked out and the room is now available.");
     }
 
 }
