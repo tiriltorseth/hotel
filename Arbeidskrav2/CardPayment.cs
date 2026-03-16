@@ -9,29 +9,42 @@ public class CardPayment : IPayable
     {
         get { return cardNumber; }
         private set
-        { cardNumber = value; }
+        {
+            if (value == null || value.Length < 4)
+                throw new ArgumentException("Card Number must be at least 4 characters long!");
+            cardNumber = value;
+        }
     }
 
     public string CardType
     {
         get { return cardType; }
-        private set { cardType = value; }
+        private set
+        {
+            if (string.IsNullOrWhiteSpace(value) || value.Length < 3)
+                throw new ArgumentException("Card Type must be at least 3 characters long!");
+            
+            if (value.Length > 30)
+                throw new ArgumentException("Card Type must be shorter than 30 characters!");
+            
+            cardType = value;
+        }
     }
 
-    public CardPayment(string CardNumber, string CardType)
+    public CardPayment(string cardNumber, string cardType)
     {
-        this.CardNumber = CardNumber;
-        this.CardType = CardType;
+        this.CardNumber = cardNumber;
+        this.CardType = cardType;
     }
 
-    public bool ProcessPayment(decimal Amount)
+    public bool ProcessPayment(decimal amount)
     {
         return true;
     }
     
     public string GetPaymentInfo()
     {
-        var showCardNumber = cardNumber.Substring(cardNumber.Length - 4, 4);
+        var showCardNumber = CardNumber.Substring(CardNumber.Length - 4, 4);
         return CardType + " **** " + showCardNumber;
     }
 }

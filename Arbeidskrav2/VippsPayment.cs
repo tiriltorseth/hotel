@@ -9,11 +9,11 @@ public class VippsPayment : IPayable
     public string PhoneNumber
     {
         get { return phoneNumber; }
-        set
+        private set
         {
             var pattern = @"^\d{2}\s\d{2}\s\d{2}\s\d{2}$";
             
-            if (value == null || !(Regex.IsMatch(value, pattern)))
+            if (string.IsNullOrWhiteSpace(value) || !(Regex.IsMatch(value, pattern)))
                 throw new ArgumentException("Invalid phone number. Please insert in this format ## ## ## ##");
             phoneNumber = value;
         }
@@ -24,7 +24,7 @@ public class VippsPayment : IPayable
         this.PhoneNumber = phoneNumber;
     }
     
-    public bool ProcessPayment(decimal Amount)
+    public bool ProcessPayment(decimal amount)
     {
         return true;
     }
@@ -32,6 +32,5 @@ public class VippsPayment : IPayable
     public string GetPaymentInfo()
     {
         return $"Vipps {PhoneNumber}";
-        
     }
 }
