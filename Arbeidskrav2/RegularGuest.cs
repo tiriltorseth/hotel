@@ -5,8 +5,8 @@ public class RegularGuest : Guest
     public override int MaxBookings => 3;
 
 
-    public RegularGuest(string Name, string Email)
-        : base(Name, Email)
+    public RegularGuest(string name, string email)
+        : base(name, email)
     {
         
     }
@@ -19,6 +19,7 @@ public class RegularGuest : Guest
     public override bool CanBook()
     {
         return ActiveBookings.Count < MaxBookings;
+        
     }
     
 

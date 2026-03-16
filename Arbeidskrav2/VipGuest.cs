@@ -9,13 +9,13 @@ public class VipGuest : Guest
     public int LoyaltyPoints
     {
         get { return loyaltyPoints; }
-        private set { loyaltyPoints = value; }
+        protected set { loyaltyPoints = value; }
     }
 
-    public VipGuest(string Name, string Email,  int LoyaltyPoints)
-        : base(Name, Email)
+    public VipGuest(string name, string email)
+        : base(name, email)
     {
-        loyaltyPoints = LoyaltyPoints;
+
     }
 
     public override decimal GetDiscount(decimal basePrice)
