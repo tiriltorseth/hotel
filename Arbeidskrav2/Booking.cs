@@ -95,7 +95,6 @@ public class Booking
         if (!IsPaid)
         {
             throw new ArgumentException($"{bookingID} has not been paid. Please pay before checking in.");
-           
         }
 
         if (DateTime.Today < CheckInDate)
@@ -110,7 +109,6 @@ public class Booking
         
         room.IsAvailable = false;
         Console.WriteLine($"Booking [{bookingID}] has been checked in!");
-        
     }
 
     public void CheckOut()

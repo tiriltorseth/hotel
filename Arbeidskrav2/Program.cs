@@ -59,7 +59,7 @@ class Program
             
             
             Console.Write("Choose option (1-6): ");
-            string input = Console.ReadLine(); 
+            int menuOptions = GetValidChoice(0, 6);
             
             
             int GetValidChoice(int min, int max)
@@ -71,7 +71,6 @@ class Program
                 }
             }
 
-            int menuOptions = GetValidChoice(0, 6);
 
             switch (menuOptions)
             {

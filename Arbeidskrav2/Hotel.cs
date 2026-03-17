@@ -43,15 +43,30 @@ public class Hotel
     // I denne må det legges til checkin og checkout så kun tilgjengelige rom vises innenfor en viss dato
     public void GetAvailableRooms(DateTime checkIn, DateTime checkOut)
     {
-        foreach (var room in RoomRegister)
+        if (BookingHistoryRegister.Count == 0)
         {
-            if (!room.IsAvailable)
+            foreach (var room in RoomRegister)
             {
-                continue;
+                room.DisplayRoomInfo();
+            }
+        }
+        int numAvailableRooms = 0;
+        foreach (var booking in BookingHistoryRegister)
+        {
+            if (booking.CheckInDate >= checkIn && booking.CheckOutDate <= checkOut)
+            {
+                if (booking.room.IsAvailable)
+                {
+                    booking.room.DisplayRoomInfo();
+                    numAvailableRooms++;
+                }
             }
             else
             {
-                room.DisplayRoomInfo();
+                if (numAvailableRooms == 0)
+                {
+                    Console.WriteLine($"There are no available this time period.");
+                }
             }
         }
     }
