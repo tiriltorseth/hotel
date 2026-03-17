@@ -116,17 +116,31 @@ public class Hotel
         }
         else
         {
-            throw new ArgumentException("Payment failed. Booking is not paid.");
+            throw new ArgumentException("\nPayment failed. Booking is not paid.");
             
         }
+
+        if (guest is RegularGuest regularGuest)
+        {
+            Console.WriteLine($"\n---BOOKING CREATED---" + 
+                              $"\nRoom [{room.RoomID}]" +
+                              $"\nGuest [{guest.Email}]" +
+                              $"\nCheck in [{booking.CheckInDate}]" +
+                              $"\nCheck out [{booking.CheckOutDate}]" +
+                              $"\nPayment Method [{payable.GetPaymentInfo()}]" +
+                              $"\nPrice [{booking.CalculateTotalPrice()}] NOK");
+        }
+        else if (guest is VipGuest vipGuest)
+            Console.WriteLine($"Booking created:" + 
+                              $"\nRoom [{room.RoomID}]" +
+                              $"\nGuest [{guest.Email}]" +
+                              $"\nCheck in [{booking.CheckInDate}]" +
+                              $"\nCheck out [{booking.CheckOutDate}]" +
+                              $"\nPayment Method [{payable.GetPaymentInfo()}]" +
+                              $"\nPrice [{booking.CalculateTotalPrice()}] NOK" +
+                              $"\nLoyalty Points [{vipGuest.LoyaltyPoints}]");
+            
         
-        Console.WriteLine($"Booking created:" + 
-                          $"\nRoom [{room.RoomID}]" +
-                          $"\nGuest [{guest.Email}]" +
-                          $"\nCheck in [{booking.CheckInDate}]" +
-                          $"\nCheck out [{booking.CheckOutDate}]" +
-                          $"\nPayment Method [{payable.GetPaymentInfo()}]" +
-                          $"\nPrice [{booking.CalculateTotalPrice()}] NOK");
         return booking;
         
     }

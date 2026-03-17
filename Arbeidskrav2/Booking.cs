@@ -63,11 +63,11 @@ public class Booking
         if (paymentMethod.ProcessPayment(amount))
         {
             IsPaid = true;
-            Console.WriteLine($"Payment successful using {paymentMethod.GetPaymentInfo()}");
+            Console.WriteLine($"\nPayment successful using {paymentMethod.GetPaymentInfo()}");
         }
         else
         {
-            throw new Exception("Payment failed!");
+            throw new ArgumentException("Payment failed!");
         }
     }
     
