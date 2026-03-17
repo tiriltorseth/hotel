@@ -43,9 +43,16 @@ class Program
         hotel.GuestRegister.Add(new VipGuest("Prinsesse Ingrid Alexadra", "prinsessen@gmail.com"));
         hotel.GuestRegister.Add(new VipGuest("Prins Sverre Magnus", "prinsmagnus@gmail.com"));
 
+        
+        // Tests
+        RunTest1(hotel);
+        RunTest2(hotel);
+        RunTest4();
+        BonusTest1();
+        
         while (true)
         {
-            Console.WriteLine("=== Hotel Gokstad ===");
+            Console.WriteLine("\n=== Hotel Gokstad ===");
             Console.WriteLine("Available operations:");
             Console.WriteLine(" 1. Show rooms");
             Console.WriteLine(" 2. Create booking");
@@ -102,7 +109,166 @@ class Program
             }
         }
     }
+
+    static void RunTest1(Hotel hotel)
+    {
+        var vip = new VipGuest("Test", "test@test.com");
+        decimal result = vip.GetDiscount(1000);
+
+        if (result == 850)
+        {
+            Console.WriteLine("Test 1 PASSED");
+        }
+        else
+        {
+            Console.WriteLine($"Test 1 FAILED, got {result}");
+        }
+    }
+
+    static void RunTest2(Hotel hotel)
+    {
+        var guest = new RegularGuest("Test", "test@test.com");
+        var room = new SingleRoom("000", "SingleRoom");
+        
+        var booking = new Booking(
+            room, 
+            guest,
+            new DateTime(2026, 01, 01),
+            new DateTime(2026, 01, 08),
+            new VippsPayment("12 23 34 45"));
+        
+        decimal result = booking.CalculateTotalPrice();
+
+        if (result == 5600)
+        {
+            Console.WriteLine("Test 2 PASSED");
+        }
+        else
+        {
+            Console.WriteLine($"Test 2 FAILED, got {result}");
+        }
+    }
+
+    /*
+    static void RunTest3()
+    {
+        var newHotel = new Hotel();
+        
+        var room = new SingleRoom("101", "SingleRoom");
+        var guest = new RegularGuest("Test", "test@test.com");
+        var paymemt = new VippsPayment("12 23 34 45");
+        
+        newHotel.RoomRegister.Add(room);
+        newHotel.GuestRegister.Add(guest);
+        
+        var booking1 = newHotel.CreateBooking(
+            guest.GuestID,
+            room.RoomID,
+            new DateTime(2026, 01, 01),
+            new DateTime(2026, 01, 08), 
+            paymemt);
+        
+        var booking2 = newHotel.CreateBooking(
+            guest.GuestID,
+            room.RoomID,
+            new DateTime(2026, 01, 01),
+            new DateTime(2026, 01, 08), 
+            paymemt);
+
+        if (booking2 == null)
+        {
+            Console.WriteLine("PASSED");
+        }
+        else
+        {
+            Console.WriteLine($"FAILED");
+        }
+    }
+    */
+
+    static void RunTest4()
+    {
+        var newHotel = new Hotel();
+        
+        var room = new SingleRoom("101", "SingleRoom");
+        var guest = new RegularGuest("Test", "test@test.com");
+        var paymemt = new VippsPayment("12 23 34 45");
+        
+        newHotel.GuestRegister.Add(guest);
+        newHotel.RoomRegister.Add(room);
+        
+        var booking1 = newHotel.CreateBooking(
+            guest.GuestID,
+            room.RoomID,
+            new DateTime(2026, 01, 01),
+            new DateTime(2026, 01, 08), 
+            paymemt);
+        
+        booking1.CheckIn();
+        
+        booking1.CheckOut();
+
+        if (room.IsAvailable)
+        {
+            Console.WriteLine($"Test 4 PASSED");
+        }
+        else
+            Console.WriteLine($"Test 4 FAILED, got {room.IsAvailable}");
+        
+    }
     
+    
+    static void BonusTest1()
+    {
+        var newHotel = new Hotel();
+        
+        var room = new SingleRoom("101", "SingleRoom");
+        var guest = new RegularGuest("Test", "test@test.com");
+        var paymemt = new VippsPayment("12 23 34 45");
+        
+        newHotel.GuestRegister.Add(guest);
+        newHotel.RoomRegister.Add(room);
+        
+        var booking1 = newHotel.CreateBooking(
+            guest.GuestID,
+            room.RoomID,
+            new DateTime(2026, 01, 01),
+            new DateTime(2026, 01, 08), 
+            paymemt);
+        
+        var booking2 = newHotel.CreateBooking(
+            guest.GuestID,
+            room.RoomID,
+            new DateTime(2026, 02, 01),
+            new DateTime(2026, 02, 08), 
+            paymemt);
+        
+        var booking3 = newHotel.CreateBooking(
+            guest.GuestID,
+            room.RoomID,
+            new DateTime(2026, 03, 01),
+            new DateTime(2026, 03, 08), 
+            paymemt);
+        
+        var booking4 = newHotel.CreateBooking(
+            guest.GuestID,
+            room.RoomID,
+            new DateTime(2026, 04, 01),
+            new DateTime(2026, 04, 08), 
+            paymemt);
+
+        if (!guest.CanBook())
+        {
+            Console.WriteLine("Bonus test PASSED");
+        }
+        else
+        {
+            Console.WriteLine($"Bonus test FAILED");
+        }
+    }
+
+
+
     static void ShowRooms(Hotel hotel)
     {
         Console.Write("Enter check-in date (dd.mm.yyyy): ");
@@ -125,22 +291,20 @@ class Program
 
         Console.Write($"Enter RoomId: ");
         string roomId = Console.ReadLine();
-        
+
         Console.Write($"Enter check-in date (dd.mm.yyyy): ");
         string checkIn = Console.ReadLine();
         DateTime checkInDate = DateTime.Parse(checkIn);
 
-        
         Console.Write($"Enter check-out date (dd.mm.yyyy): ");
         string checkOut = Console.ReadLine();
         DateTime checkOutDate = DateTime.Parse(checkOut);
 
-        
-        Console.Write("Payment method (1=Card Payment, 2=Vipps): ");
+        Console.Write("Payment method (1:Card Payment, 2:Vipps): ");
         string paymentMethod = Console.ReadLine();
 
         IPayable payment = null;
-        
+
         if (paymentMethod == "1")
         {
             Console.Write($"Enter your card number: ");
@@ -163,14 +327,11 @@ class Program
             Console.WriteLine($"Invalid payment method. Try again.");
             return;
         }
-        
+
         hotel.CreateBooking(guestId, roomId, checkInDate, checkOutDate, payment);
     }
-        
-        
-    }
-
-/*
+    
+    /*
     static void CheckIn(Hotel hotel)
     {
     }
@@ -187,7 +348,9 @@ class Program
     {
     }
 }*/
-    
+
+}
+
 
 
 

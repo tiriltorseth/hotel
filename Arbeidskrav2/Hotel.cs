@@ -122,25 +122,18 @@ public class Hotel
 
         if (guest is RegularGuest regularGuest)
         {
-            Console.WriteLine($"\n---BOOKING CREATED---" + 
-                              $"\nRoom [{room.RoomID}]" +
-                              $"\nGuest [{guest.Email}]" +
-                              $"\nCheck in [{booking.CheckInDate}]" +
-                              $"\nCheck out [{booking.CheckOutDate}]" +
-                              $"\nPayment Method [{payable.GetPaymentInfo()}]" +
-                              $"\nPrice [{booking.CalculateTotalPrice()}] NOK");
+            Console.WriteLine($"\nBooking {booking.BookingID} created for {guest.Name}" +
+                              $"\n{room.RoomType} {room.RoomID} -- {booking.CheckInDate} to {booking.CheckOutDate}" +
+                              $"\nTotal Price: {booking.CalculateTotalPrice()} kr" +
+                              $"\nPayment approved with {payable.GetPaymentInfo()}");
+            
         }
         else if (guest is VipGuest vipGuest)
-            Console.WriteLine($"Booking created:" + 
-                              $"\nRoom [{room.RoomID}]" +
-                              $"\nGuest [{guest.Email}]" +
-                              $"\nCheck in [{booking.CheckInDate}]" +
-                              $"\nCheck out [{booking.CheckOutDate}]" +
-                              $"\nPayment Method [{payable.GetPaymentInfo()}]" +
-                              $"\nPrice [{booking.CalculateTotalPrice()}] NOK" +
+            Console.WriteLine($"\nBooking {booking.BookingID} created for {guest.Name}" +
+                              $"\n{room.RoomType} {room.RoomID} -- {booking.CheckInDate} to {booking.CheckOutDate}" +
+                              $"\nTotal Price: {booking.CalculateTotalPrice()} kr" +
+                              $"\nPayment approved with {payable.GetPaymentInfo()}" +
                               $"\nLoyalty Points [{vipGuest.LoyaltyPoints}]");
-            
-        
         return booking;
         
     }
