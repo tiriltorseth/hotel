@@ -1062,7 +1062,152 @@ Løsningen er å sjekke eksisterende bookinger, ikke boolen
 
 **Prompt:**
 
+denne printer feilmld 2 ganger når det ikke er rom  
+
+    public void GetAvailableRooms(DateTime checkIn, DateTime checkOut)
+
+    {
+    if (BookingHistoryRegister.Count == 0)
+    {
+    foreach (var room in RoomRegister)
+    {
+    room.DisplayRoomInfo();
+    }
+    }
+    int numAvailableRooms = 0;
+    foreach (var booking in BookingHistoryRegister)
+    {
+    if (booking.CheckInDate >= checkIn && booking.CheckOutDate <= checkOut)
+    {
+    if (booking.room.IsAvailable)
+    {
+    booking.room.DisplayRoomInfo();
+    numAvailableRooms++;
+    }
+    }
+    else
+    {
+    if (numAvailableRooms == 0)
+    {
+    Console.WriteLine($"There are no available this time period.");
+    }
+    }
+    }
+    }
+
 **Svar:**
+
+Jepp — den printer flere ganger fordi logikken din ligger “feil sted” i loopen. La oss bryte det ned 👇
+
+Hvorfor du får feilmeldingen flere ganger
+
+Denne delen er synderen:
+
+    else
+    {
+    if (numAvailableRooms == 0)
+    {
+    Console.WriteLine($"There are no available this time period.");
+    }
+    }
+
+👉 Dette ligger inni foreach-loopen
+
+Så for hver booking som ikke matcher, kjører den:
+
+"There are no available..."
+
+🧠 Hva som faktisk skjer
+
+Si du har 3 bookinger som ikke matcher:
+
+Loopen gjør:
+
+booking 1 → print feilmelding
+
+booking 2 → print feilmelding
+
+booking 3 → print feilmelding
+
+👉 derfor får du spam
+
+Hovedregelen du bryter
+Ikke print "ingen funn" inni en loop
+
+👉 Du vet ikke om det finnes noe før loopen er ferdig
+
+✅ Riktig tankegang
+
+Loop gjennom alt
+
+Tell / finn det som er tilgjengelig
+
+ETTER loopen:
+
+hvis 0 → print feilmelding
+
+En annen bug du har (viktig!)
+
+Denne:
+
+if (booking.CheckInDate >= checkIn && booking.CheckOutDate <= checkOut)
+
+👉 er feil logikk for tilgjengelighet
+
+Dette sjekker:
+
+“booking er HELT inni perioden”
+
+Men du vil egentlig sjekke:
+
+“overlapper booking med perioden?”
+
+En booking er ikke tilgjengelig hvis den overlapper
+
+Overlapp skjer når:
+
+checkIn < booking.CheckOut
+AND
+checkOut > booking.CheckIn
+
+En større designfeil (veldig viktig)
+
+Du looper gjennom:
+
+BookingHistoryRegister
+
+👉 men du burde loope gjennom:
+
+RoomRegister
+Hvorfor?
+
+Du vil finne:
+
+“hvilke rom er ledige?”
+
+Ikke:
+
+“hvilke bookinger finnes?”
+
+Legg til return her:
+
+    if (BookingHistoryRegister.Count == 0)
+
+Fjern denne:
+
+    else
+    {
+    if (numAvailableRooms == 0)
+    {
+    Console.WriteLine(...)
+    }
+    }
+
+Legg inn riktig datosjekk:
+    checkIn < booking.CheckOutDate && checkOut > booking.CheckInDate
+
+
+
 
 **Prompt:**
 

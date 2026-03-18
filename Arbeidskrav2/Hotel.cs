@@ -36,6 +36,7 @@ public class Hotel
         }
         
         GuestRegister.Add(guest);
+        Console.WriteLine($"[{guest.GuestID}] {guest.Name} has been registered.");
         return guest;
     }
 
@@ -48,26 +49,40 @@ public class Hotel
             {
                 room.DisplayRoomInfo();
             }
+            return;
         }
+        
         int numAvailableRooms = 0;
-        foreach (var booking in BookingHistoryRegister)
+        
+        foreach (var room in RoomRegister)
         {
-            if (booking.CheckInDate >= checkIn && booking.CheckOutDate <= checkOut)
+            bool isBooked = false;
+
+            foreach (var booking in BookingHistoryRegister)
             {
-                if (booking.room.IsAvailable)
+                if (booking.room.RoomID == room.RoomID)
                 {
-                    booking.room.DisplayRoomInfo();
-                    numAvailableRooms++;
+                    // riktig overlapp-sjekk
+                    if (checkIn < booking.CheckOutDate && checkOut > booking.CheckInDate)
+                    {
+                        isBooked = true;
+                        break;
+                    }
                 }
             }
-            else
+
+            if (!isBooked)
             {
-                if (numAvailableRooms == 0)
-                {
-                    Console.WriteLine($"There are no available this time period.");
-                }
+                room.DisplayRoomInfo();
+                numAvailableRooms++;
             }
         }
+
+        if (numAvailableRooms == 0)
+        {
+            Console.WriteLine("There are no available rooms this time period.");
+        }
+       
     }
 
     public Booking? CreateBooking(string guestID, string roomID, DateTime checkIn,
@@ -133,12 +148,12 @@ public class Hotel
             throw new ArgumentException("\nPayment failed. Booking is not paid.");
             
         }
-        
+        /*
         if (guest is RegularGuest regularGuest)
         {
             Console.WriteLine($"\n------------------------------------------------------------" +
                               $"\nBooking {booking.BookingID} created for {guest.Name}" +
-                              $"\n{room.RoomType} {room.RoomID} -- {booking.CheckInDate} to {booking.CheckOutDate}" +
+                              $"\n{room.RoomType} {room.RoomID} -- {booking.CheckInDate:dd.mm.yyyy} to {booking.CheckOutDate:dd.mm.yyyy}" +
                               $"\nTotal Price: {booking.CalculateTotalPrice()} kr" +
                               $"\nPayment approved with {payable.GetPaymentInfo()}" +
                               $"\n------------------------------------------------------------");
@@ -147,11 +162,12 @@ public class Hotel
         else if (guest is VipGuest vipGuest)
             Console.WriteLine($"\n------------------------------------------------------------" +
                               $"\nBooking {booking.BookingID} created for {guest.Name}" +
-                              $"\n{room.RoomType} {room.RoomID} -- {booking.CheckInDate} to {booking.CheckOutDate}" +
+                              $"\n{room.RoomType} {room.RoomID} -- {booking.CheckInDate:dd.mm.yyyy} to {booking.CheckOutDate:dd.mm.yyyy}" +
                               $"\nTotal Price: {booking.CalculateTotalPrice()} kr" +
                               $"\nPayment approved with {payable.GetPaymentInfo()}" +
                               $"\nLoyalty Points [{vipGuest.LoyaltyPoints}]" +
                               $"\n------------------------------------------------------------");
+                              */
         return booking;
         
     }
@@ -194,11 +210,19 @@ public class Hotel
             return;
         }
     
-        Console.WriteLine($"Bookings for Guest [{guest.Name}]:");
+        Console.WriteLine($"Bookings for Guest {guest.Name} [{guest.GuestID}]:");
+        Console.WriteLine("--------------------------------------------------------");
+        
         foreach (var booking in guest.ActiveBookings)
         {
             Console.WriteLine($"\nBooking ID: {booking.BookingID}" +
-                              $"\nTotal Price: {booking.CalculateTotalPrice()}");
+                              $"\nRoom ID: {booking.room.RoomID}" +
+                              $"\nRoom type: {booking.room.RoomType}" +
+                              $"\nCheck in: {booking.CheckInDate:dd.mm.yyyy}" +
+                              $"\nCheck out: {booking.CheckOutDate:dd.mm.yyyy}" +
+                              $"\nTotal Price: {booking.CalculateTotalPrice()}" +
+                              $"\n");
+            
         }
     }
 
