@@ -1,5 +1,15 @@
 # Bruk av AI i Arbeidskrav 2:
 
+
+***I dette arbeidskravet har jeg brukt AI mindre til forståelse enn arbeidskrav 1 og mer til debugging. Synes personlig fristen
+på kravene er litt for korte og har ikke fysisk tid til å mauelt debugge alt sammen selv, da jeg fortsatt synes dette er vanskelig
+og er ny innenfor koding generelt.***
+
+***Noen friheter har jeg måttet ta meg som ikke inngår i funksjonelle krav, da jeg opplevde at selve bookingen av et rom/IsAvailable var litt
+klundrete laget. Derfor tipset AI meg og viste meg at bool Isbooked kan være nyttig til å hjelpe å forstå ltt mer, den er nok
+den største hjelpen jeg har fått/mest betydlige. Har også kopiert funksjonaliteten til Arbeidskrav 1, der KanLåne ble brukt om ansatt og medlem.
+Dette er lagt in som CanBook for å gjøre sjekken til gjestene lettest mulig.***
+
 **Prompt:**
 Hva er galt med denne? d står at den skal være abstrakt public abstract decimal GetDiscount(decimal basePrice) { return basePrice; }
 
@@ -945,9 +955,110 @@ Da kan ingen gjøre:
 
 hotel.RoomRegister = noe annet
 
-**Prompt:**
+**Prompt:** Test 3: Hotel.CreateBooking() gir feilmelding hvis rommet allerede er opptatt. hvordan er denne fysisk mulig npr det er Checkin() som håndterer IsAvailable bool ifølge kravspek? så rommet blir ikke satt til opptatt før i checkin se oppgavetekst.
 
 **Svar:**
+
+Veldig bra observert – dette er faktisk et lite “design-gap” i oppgaven som mange snubler i 👀
+
+Du har helt rett i én ting:
+
+IsAvailable settes først i CheckIn()
+→ altså ikke ved booking
+
+Så spørsmålet ditt er helt legitimt:
+👉 Hvordan kan rommet være “opptatt” før check-in?
+
+🧠 Svaret: “Opptatt” betyr ikke IsAvailable
+
+I denne oppgaven finnes det egentlig to forskjellige konsepter:
+
+1. 🏨 Fysisk opptatt (under opphold)
+
+styres av IsAvailable
+
+settes i:
+
+    CheckIn() → false
+    CheckOut() → true
+2. 📅 Reservert (booket i en periode)
+
+styres av booking-datoer
+
+dette er det testen din handler om
+
+🔥 Det oppgaven EGENTLIG mener
+
+Når de sier:
+
+"rommet allerede er opptatt"
+
+så mener de egentlig:
+
+👉 "rommet er allerede booket i den perioden"
+
+Ikke:
+👉 "noen har checket inn akkurat nå"
+
+💥 Derfor må du ignorere IsAvailable i CreateBooking
+
+Denne:
+
+    if (!room.IsAvailable)
+
+👉 er nesten irrelevant for Test 3
+
+✅ Det riktige du skal gjøre
+
+Du må sjekke:
+
+👉 Finnes det en booking som overlapper i dato?
+
+    bool isRoomBooked = BookingHistoryRegister.Any(b =>
+    b.Room.RoomID == roomID &&
+    b.CheckOutDate > checkIn &&
+    b.CheckInDate < checkOut
+    );
+    
+    if (isRoomBooked)
+    {
+    Console.WriteLine($"Room [{roomID}] is already booked in this period.");
+    return null;
+}
+🧠 Intuisjon (superviktig å forstå)
+
+Tenk Airbnb:
+
+Du kan booke rom i juli
+
+Jeg prøver å booke samme rom i juli
+
+👉 Selv om ingen har checket inn enda
+→ rommet er fortsatt “opptatt” (reservert)
+
+🔁 Hvordan alt henger sammen
+Situasjon	Hva brukes
+Booking	📅 dato-sjekk
+Check-in	IsAvailable = false
+Check-out	IsAvailable = true
+⚠️ Litt kritikk av oppgaven (du tenker riktig)
+
+Du har oppdaget at:
+
+IsAvailable brukes i krav
+
+men ikke egentlig nok for booking-logikk
+
+👉 Dette er helt riktig observert
+→ og faktisk ganske vanlig i skoleoppgaver
+
+🎯 Konklusjon
+
+Du har ikke misforstått – du har sett et hull i designet ✔️
+
+Test 3 handler om dato-overlapp, ikke IsAvailable
+
+Løsningen er å sjekke eksisterende bookinger, ikke boolen
 
 **Prompt:**
 

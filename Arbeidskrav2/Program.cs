@@ -1,8 +1,4 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-using System.Security.Cryptography.X509Certificates;
-using System.Transactions;
-
-namespace Arbeidskrav2;
+﻿namespace Arbeidskrav2;
 
 class Program
 {
@@ -42,11 +38,13 @@ class Program
         hotel.GuestRegister.Add(new VipGuest("Dronning Sonja", "dronningen@gmail.com"));
         hotel.GuestRegister.Add(new VipGuest("Prinsesse Ingrid Alexadra", "prinsessen@gmail.com"));
         hotel.GuestRegister.Add(new VipGuest("Prins Sverre Magnus", "prinsmagnus@gmail.com"));
+        hotel.GuestRegister.Add(new VipGuest("Mia Mor", "miagrande@meny.no"));
 
         
         // Tests
         RunTest1(hotel);
         RunTest2(hotel);
+        RunTest3();
         RunTest4();
         BonusTest1();
         
@@ -112,6 +110,7 @@ class Program
 
     static void RunTest1(Hotel hotel)
     {
+        
         var vip = new VipGuest("Test", "test@test.com");
         decimal result = vip.GetDiscount(1000);
 
@@ -149,55 +148,56 @@ class Program
         }
     }
 
-    /*
+    
     static void RunTest3()
     {
-        var newHotel = new Hotel();
+        var testHotel = new Hotel();
         
         var room = new SingleRoom("101", "SingleRoom");
         var guest = new RegularGuest("Test", "test@test.com");
         var paymemt = new VippsPayment("12 23 34 45");
         
-        newHotel.RoomRegister.Add(room);
-        newHotel.GuestRegister.Add(guest);
+        testHotel.RoomRegister.Add(room);
+        testHotel.GuestRegister.Add(guest);
         
-        var booking1 = newHotel.CreateBooking(
+        var booking1 = testHotel.CreateBooking(
             guest.GuestID,
             room.RoomID,
             new DateTime(2026, 01, 01),
             new DateTime(2026, 01, 08), 
             paymemt);
         
-        var booking2 = newHotel.CreateBooking(
+        var booking2 = testHotel.CreateBooking(
             guest.GuestID,
             room.RoomID,
             new DateTime(2026, 01, 01),
             new DateTime(2026, 01, 08), 
             paymemt);
+            
 
         if (booking2 == null)
         {
-            Console.WriteLine("PASSED");
+            Console.WriteLine("\nTest 3 PASSED");
         }
         else
         {
-            Console.WriteLine($"FAILED");
+            Console.WriteLine("\nTest 3 FAILED");
         }
     }
-    */
+    
 
     static void RunTest4()
     {
-        var newHotel = new Hotel();
+        var testHotel2 = new Hotel();
         
         var room = new SingleRoom("101", "SingleRoom");
         var guest = new RegularGuest("Test", "test@test.com");
         var paymemt = new VippsPayment("12 23 34 45");
         
-        newHotel.GuestRegister.Add(guest);
-        newHotel.RoomRegister.Add(room);
+        testHotel2.GuestRegister.Add(guest);
+        testHotel2.RoomRegister.Add(room);
         
-        var booking1 = newHotel.CreateBooking(
+        var booking1 = testHotel2.CreateBooking(
             guest.GuestID,
             room.RoomID,
             new DateTime(2026, 01, 01),
@@ -210,47 +210,47 @@ class Program
 
         if (room.IsAvailable)
         {
-            Console.WriteLine($"Test 4 PASSED");
+            Console.WriteLine($"\nTest 4 PASSED");
         }
         else
-            Console.WriteLine($"Test 4 FAILED, got {room.IsAvailable}");
+            Console.WriteLine($"\nTest 4 FAILED, got {room.IsAvailable}");
         
     }
     
     
     static void BonusTest1()
     {
-        var newHotel = new Hotel();
+        var testHotel3 = new Hotel();
         
         var room = new SingleRoom("101", "SingleRoom");
         var guest = new RegularGuest("Test", "test@test.com");
         var paymemt = new VippsPayment("12 23 34 45");
         
-        newHotel.GuestRegister.Add(guest);
-        newHotel.RoomRegister.Add(room);
+        testHotel3.GuestRegister.Add(guest);
+        testHotel3.RoomRegister.Add(room);
         
-        var booking1 = newHotel.CreateBooking(
+        var booking1 = testHotel3.CreateBooking(
             guest.GuestID,
             room.RoomID,
             new DateTime(2026, 01, 01),
             new DateTime(2026, 01, 08), 
             paymemt);
         
-        var booking2 = newHotel.CreateBooking(
+        var booking2 = testHotel3.CreateBooking(
             guest.GuestID,
             room.RoomID,
             new DateTime(2026, 02, 01),
             new DateTime(2026, 02, 08), 
             paymemt);
         
-        var booking3 = newHotel.CreateBooking(
+        var booking3 = testHotel3.CreateBooking(
             guest.GuestID,
             room.RoomID,
             new DateTime(2026, 03, 01),
             new DateTime(2026, 03, 08), 
             paymemt);
         
-        var booking4 = newHotel.CreateBooking(
+        var booking4 = testHotel3.CreateBooking(
             guest.GuestID,
             room.RoomID,
             new DateTime(2026, 04, 01),

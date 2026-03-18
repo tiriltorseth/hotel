@@ -40,7 +40,6 @@ public class Hotel
     }
 
     
-    // I denne må det legges til checkin og checkout så kun tilgjengelige rom vises innenfor en viss dato
     public void GetAvailableRooms(DateTime checkIn, DateTime checkOut)
     {
         if (BookingHistoryRegister.Count == 0)
@@ -102,6 +101,21 @@ public class Hotel
             return null;
         }
         
+        
+        bool isRoomBooked = BookingHistoryRegister.Any(b =>
+            b.room.RoomID == roomID &&
+            b.CheckOutDate > checkIn &&
+            b.CheckInDate < checkOut
+        );
+       
+        if (isRoomBooked)
+        {
+            Console.WriteLine($"Room [{roomID}] is already booked in this period.");
+            return null;
+        }
+        
+        
+        
         var booking = new Booking(room, guest, checkIn, checkOut, payable);
         
         if (booking.IsPaid)
@@ -119,21 +133,29 @@ public class Hotel
             throw new ArgumentException("\nPayment failed. Booking is not paid.");
             
         }
+        
+        
 
+
+        
         if (guest is RegularGuest regularGuest)
         {
-            Console.WriteLine($"\nBooking {booking.BookingID} created for {guest.Name}" +
-                              $"\n{room.RoomType} {room.RoomID} -- {booking.CheckInDate} to {booking.CheckOutDate}" +
-                              $"\nTotal Price: {booking.CalculateTotalPrice()} kr" +
-                              $"\nPayment approved with {payable.GetPaymentInfo()}");
-            
-        }
-        else if (guest is VipGuest vipGuest)
-            Console.WriteLine($"\nBooking {booking.BookingID} created for {guest.Name}" +
+            Console.WriteLine($"\n------------------------------------------------------------" +
+                              $"\nBooking {booking.BookingID} created for {guest.Name}" +
                               $"\n{room.RoomType} {room.RoomID} -- {booking.CheckInDate} to {booking.CheckOutDate}" +
                               $"\nTotal Price: {booking.CalculateTotalPrice()} kr" +
                               $"\nPayment approved with {payable.GetPaymentInfo()}" +
-                              $"\nLoyalty Points [{vipGuest.LoyaltyPoints}]");
+                              $"\n------------------------------------------------------------");
+            
+        }
+        else if (guest is VipGuest vipGuest)
+            Console.WriteLine($"\n------------------------------------------------------------" +
+                              $"\nBooking {booking.BookingID} created for {guest.Name}" +
+                              $"\n{room.RoomType} {room.RoomID} -- {booking.CheckInDate} to {booking.CheckOutDate}" +
+                              $"\nTotal Price: {booking.CalculateTotalPrice()} kr" +
+                              $"\nPayment approved with {payable.GetPaymentInfo()}" +
+                              $"\nLoyalty Points [{vipGuest.LoyaltyPoints}]" +
+                              $"\n------------------------------------------------------------");
         return booking;
         
     }
