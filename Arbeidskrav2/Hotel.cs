@@ -17,7 +17,7 @@ public class Hotel
         private set
         {
             if (string.IsNullOrWhiteSpace(value) || (value.Length < 3) )
-                throw new ArgumentException("Hotel name must be at least 3 characters long.");
+                Console.WriteLine("Hotel name must be at least 3 characters long.");
             hotelName = value;
         }
     }
@@ -28,7 +28,7 @@ public class Hotel
     public Guest RegisterGuest(Guest guest)
     {
         if (guest == null)
-            throw new ArgumentException("Guest cannot be null.");
+            Console.WriteLine("Guest cannot be null.");
         
         if (GuestRegister.Any(g => g.Email == guest.Email))
         {
@@ -145,29 +145,9 @@ public class Hotel
         }
         else
         {
-            throw new ArgumentException("\nPayment failed. Booking is not paid.");
+            Console.WriteLine("\nPayment failed. Booking is not paid.");
             
         }
-        /*
-        if (guest is RegularGuest regularGuest)
-        {
-            Console.WriteLine($"\n------------------------------------------------------------" +
-                              $"\nBooking {booking.BookingID} created for {guest.Name}" +
-                              $"\n{room.RoomType} {room.RoomID} -- {booking.CheckInDate:dd.mm.yyyy} to {booking.CheckOutDate:dd.mm.yyyy}" +
-                              $"\nTotal Price: {booking.CalculateTotalPrice()} kr" +
-                              $"\nPayment approved with {payable.GetPaymentInfo()}" +
-                              $"\n------------------------------------------------------------");
-            
-        }
-        else if (guest is VipGuest vipGuest)
-            Console.WriteLine($"\n------------------------------------------------------------" +
-                              $"\nBooking {booking.BookingID} created for {guest.Name}" +
-                              $"\n{room.RoomType} {room.RoomID} -- {booking.CheckInDate:dd.mm.yyyy} to {booking.CheckOutDate:dd.mm.yyyy}" +
-                              $"\nTotal Price: {booking.CalculateTotalPrice()} kr" +
-                              $"\nPayment approved with {payable.GetPaymentInfo()}" +
-                              $"\nLoyalty Points [{vipGuest.LoyaltyPoints}]" +
-                              $"\n------------------------------------------------------------");
-                              */
         return booking;
         
     }

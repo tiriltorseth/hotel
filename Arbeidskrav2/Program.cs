@@ -56,22 +56,6 @@ class Program
             new DateTime(2026, 06, 012),
             new VippsPayment("33 55 66 77"));
 
-        /*
-        //Gjester med ID
-        foreach (var guest in hotel.GuestRegister)
-        {
-            Console.WriteLine($"{guest.GuestID}  {guest.Name}");
-        }
-        
-
-
-        //Bookinger med ID
-        foreach (var booking in hotel.BookingHistoryRegister)
-        {
-            Console.WriteLine($"\n{booking.BookingID}  {booking.CheckInDate}   {booking.CheckOutDate}");
-        }
-        */
-
 
         // Tests
         RunTest1(hotel);
@@ -127,15 +111,15 @@ class Program
                 case 4:
                     CheckOut(hotel);
                     break;
-                
+
                 case 5:
                     ShowBookings(hotel);
                     break;
-                
+
                 case 6:
                     RegisterNewGuest(hotel);
                     break;
-                
+
                 case 0:
                     Console.WriteLine("\nProgram closed. Bye!");
                     return;
@@ -145,7 +129,7 @@ class Program
 
     static void RunTest1(Hotel hotel)
     {
-
+        Console.WriteLine("=========== TESTER ===========");
         var vip = new VipGuest("Test", "test@test.com");
         decimal result = vip.GetDiscount(1000);
 
@@ -175,11 +159,11 @@ class Program
 
         if (result == 5600)
         {
-            Console.WriteLine("Test 2 PASSED");
+            Console.WriteLine("\nTest 2 PASSED");
         }
         else
         {
-            Console.WriteLine($"Test 2 FAILED, got {result}");
+            Console.WriteLine($"\nTest 2 FAILED, got {result}");
         }
     }
 
@@ -294,13 +278,17 @@ class Program
 
         if (!guest.CanBook())
         {
-            Console.WriteLine("Bonus test PASSED");
+            Console.WriteLine("\nBonus test PASSED");
         }
         else
         {
-            Console.WriteLine($"Bonus test FAILED");
+            Console.WriteLine($"\nBonus test FAILED");
         }
+
+        Console.WriteLine("==============================");
     }
+
+
 
     static void ShowRooms(Hotel hotel)
     {
@@ -317,7 +305,7 @@ class Program
         hotel.GetAvailableRooms(checkIn, checkOut);
     }
 
-    
+
     static void CreateBooking(Hotel hotel)
     {
         Console.Write("Enter GuestId: ");
@@ -362,14 +350,23 @@ class Program
             return;
         }
 
-       var booking = hotel.CreateBooking(guestId, roomId, checkInDate, checkOutDate, payment);
+        var booking = hotel.CreateBooking(guestId, roomId, checkInDate, checkOutDate, payment);
 
-       Guest guest = hotel.GuestRegister
-           .FirstOrDefault(g => g.GuestID == guestId);
-            
+        Guest guest = hotel.GuestRegister
+            .FirstOrDefault(g => g.GuestID == guestId);
+
+        if (guest == null)
+        {
+            Console.WriteLine("Guest not found");
+        }
+
         Room room = hotel.RoomRegister.FirstOrDefault(r => r.RoomID == roomId);
-        
-        
+
+        if (room == null)
+        {
+            Console.WriteLine("Room not found");
+        }
+
         if (guest is RegularGuest regularGuest)
         {
             Console.WriteLine($"\n------------------------------------------------------------" +
@@ -378,7 +375,7 @@ class Program
                               $"\nTotal Price: {booking.CalculateTotalPrice()} kr" +
                               $"\nPayment approved with {payment.GetPaymentInfo()}" +
                               $"\n------------------------------------------------------------");
-            
+
         }
         else if (guest is VipGuest vipGuest)
             Console.WriteLine($"\n------------------------------------------------------------" +
@@ -393,78 +390,96 @@ class Program
 
     static void CheckIn(Hotel hotel)
     {
-
         Console.Write("Welcome! Please enter your BookingID (BK###): ");
         string inputBookingId = Console.ReadLine();
 
+        var booking = hotel.BookingHistoryRegister
+            .FirstOrDefault(b => b.BookingID == inputBookingId);
 
-        foreach (var booking in hotel.BookingHistoryRegister)
+        if (booking == null)
         {
-            if (booking.BookingID == inputBookingId)
-            {
-                booking.CheckIn();
-            }
+            Console.WriteLine("Booking not found");
+            return;
         }
 
+        booking.CheckIn();
+        
     }
 
 
     static void CheckOut(Hotel hotel)
-    {
-        Console.Write("Please enter your BookingID (BK###): ");
-        string inputBookingId = Console.ReadLine();
-
-        foreach (var booking in hotel.BookingHistoryRegister)
         {
-            if (booking.BookingID == inputBookingId)
+            
+            Console.Write("Please enter your BookingID (BK###): ");
+            string inputBookingId = Console.ReadLine();
+
+            var booking = hotel.BookingHistoryRegister
+                .FirstOrDefault(b => b.BookingID == inputBookingId);
+
+            if (booking == null)
             {
-                booking.CheckOut();
-                Console.WriteLine("Thank you for your stay!");
+                Console.WriteLine("Booking not found");
+                return;
             }
+
+            booking.CheckOut();
+            /*
+            Console.Write("Please enter your BookingID (BK###): ");
+            string inputBookingId = Console.ReadLine();
+
+            foreach (var booking in hotel.BookingHistoryRegister)
+            {
+                if (booking.BookingID == inputBookingId)
+                {
+                    booking.CheckOut();
+                    Console.WriteLine("Thank you for your stay!");
+                }
+            }
+            */
         }
-    }
-    
 
-    static void ShowBookings(Hotel hotel)
-    {
-        Console.Write("Please enter your GuestId: ");
-        string inputGuestId = Console.ReadLine();
 
-        hotel.GetGuestBookings(inputGuestId);
-    }
-
-    
-    static void RegisterNewGuest(Hotel hotel)
-    {
-        Console.Write("Name: ");
-        string name = Console.ReadLine();
-        
-        Console.Write("Email: ");
-        string email = Console.ReadLine();
-        
-        Console.Write("Do your wish to be VIP guest and earn loyalty points? (Yes/No): ");
-        string yesOrNo = Console.ReadLine();
-
-        if (yesOrNo == "Yes" || yesOrNo == "yes")
+        static void ShowBookings(Hotel hotel)
         {
-            var guest = new VipGuest(name, email);
-            hotel.RegisterGuest(guest);
+            Console.Write("Please enter your GuestId: ");
+            string inputGuestId = Console.ReadLine();
 
+            hotel.GetGuestBookings(inputGuestId);
         }
-        else if (yesOrNo == "No" || yesOrNo == "no")
-        {
-            var guest = new RegularGuest(name, email);
-            hotel.RegisterGuest(guest);
-        }
-        else
-        {
-            Console.WriteLine($"Invalid input. Try again.");
-        }
-        
 
-    }
+
+        static void RegisterNewGuest(Hotel hotel)
+        {
+            Console.Write("Name: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Email: ");
+            string email = Console.ReadLine();
+
+            Console.Write("Do your wish to be VIP guest and earn loyalty points? (Yes/No): ");
+            string yesOrNo = Console.ReadLine();
+
+            if (yesOrNo == "Yes" || yesOrNo == "yes")
+            {
+                var guest = new VipGuest(name, email);
+                hotel.RegisterGuest(guest);
+
+            }
+            else if (yesOrNo == "No" || yesOrNo == "no")
+            {
+                var guest = new RegularGuest(name, email);
+                hotel.RegisterGuest(guest);
+            }
+            else
+            {
+                Console.WriteLine($"Invalid input. Try again.");
+            }
+
+        
         
     }
+}   
+
 
 
 

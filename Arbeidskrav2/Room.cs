@@ -18,7 +18,7 @@ public abstract class Room
         {
             var pattern = @"^\d{3}$";
             if (value == null || !(Regex.IsMatch(value, pattern)))
-                throw new ArgumentException("Room ID must be a 3 digit number (e.g 101)");
+                Console.WriteLine("Room ID must be a 3 digit number (e.g 101)");
 
             roomID = value;
         }
@@ -36,7 +36,7 @@ public abstract class Room
         protected set
         {
             if (value <= 0)
-                throw new ArgumentException("Price per night must be greater than zero");
+               Console.WriteLine("Price per night must be greater than zero");
             pricePerNight = value;
         }
     }

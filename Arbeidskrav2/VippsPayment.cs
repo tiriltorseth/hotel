@@ -14,7 +14,7 @@ public class VippsPayment : IPayable
             var pattern = @"^\d{2}\s\d{2}\s\d{2}\s\d{2}$";
             
             if (string.IsNullOrWhiteSpace(value) || !(Regex.IsMatch(value, pattern)))
-                throw new ArgumentException("Invalid phone number. Please insert in this format ## ## ## ##");
+                Console.WriteLine("Invalid phone number. Please insert in this format ## ## ## ##");
             phoneNumber = value;
         }
     }

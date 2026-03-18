@@ -18,11 +18,11 @@ public abstract class Guest
         protected set
         {
             if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException("Name can not be empty.");
+                Console.WriteLine("Name can not be empty.");
             
             if (value.Length < 2)
             {
-                throw new ArgumentException("Name has to be more than two letters.");
+               Console.WriteLine("Name has to be more than two letters.");
             }
             name = value;
         }
@@ -33,12 +33,12 @@ public abstract class Guest
         protected set
         {
             if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException("Email can not be empty.");
+                Console.WriteLine("Email can not be empty.");
             
             string checkEmail = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
             
             if (!(Regex.IsMatch(value, checkEmail)))
-                throw new ArgumentException("Invalid email!");
+                Console.WriteLine("Invalid email!");
            
             
                 

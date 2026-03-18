@@ -31,7 +31,7 @@ public class Booking
         protected set
         {
             if (value <= checkInDate)
-                throw new ArgumentException("Checkout date cannot be before checkin date!");
+                Console.WriteLine("Checkout date cannot be before checkin date!");
             
             checkOutDate = value;
         }
@@ -66,7 +66,7 @@ public class Booking
         }
         else
         {
-            throw new ArgumentException("Payment failed!");
+            Console.WriteLine("Payment failed!");
         }
     }
     
@@ -75,12 +75,12 @@ public class Booking
     public decimal CalculateTotalPrice()
     {
         if (CheckOutDate <= CheckInDate)
-            throw new ArgumentException("Checkout date is before checkin date!");
+            Console.WriteLine("Checkout date is before checkin date!");
         
         TimeSpan spentNights = CheckOutDate.Subtract(CheckInDate);
 
         if (spentNights.Days <= 0)
-            throw new ArgumentException("Booking must be atleast one nights.");
+            Console.WriteLine("Booking must be atleast one nights.");
         
         decimal basePrice = spentNights.Days * room.PricePerNight;
 
@@ -91,15 +91,15 @@ public class Booking
 
     public void CheckIn()
     {
+        
         if (!IsPaid)
         {
-            throw new ArgumentException($"{bookingID} has not been paid. Please pay before checking in.");
+            Console.WriteLine($"{bookingID} has not been paid. Please pay before checking in.");
         }
-        
         
         if (room.IsAvailable is false)
         {
-            throw new InvalidOperationException($"Room {room.RoomID} is not available. Please choose another room.");
+            Console.WriteLine($"Room {room.RoomID} is not available. Please choose another room.");
         }
         
         room.IsAvailable = false;
@@ -110,7 +110,7 @@ public class Booking
     {
         if (room.IsAvailable)
         {
-            throw new InvalidOperationException($"This room is already available. Cannot check out!");
+            Console.WriteLine($"This room is already available. Cannot check out!");
             return;
         }
         

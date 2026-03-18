@@ -11,7 +11,7 @@ public class CardPayment : IPayable
         private set
         {
             if (value == null || value.Length < 4)
-                throw new ArgumentException("Card Number must be at least 4 characters long!");
+               Console.WriteLine("Card Number must be at least 4 characters long!");
             cardNumber = value;
         }
     }
@@ -22,10 +22,10 @@ public class CardPayment : IPayable
         private set
         {
             if (string.IsNullOrWhiteSpace(value) || value.Length < 3)
-                throw new ArgumentException("Card Type must be at least 3 characters long!");
+                Console.WriteLine("Card Type must be at least 3 characters long!");
             
             if (value.Length > 30)
-                throw new ArgumentException("Card Type must be shorter than 30 characters!");
+                Console.WriteLine("Card Type must be shorter than 30 characters!");
             
             cardType = value;
         }
