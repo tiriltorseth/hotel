@@ -1,4 +1,6 @@
-﻿namespace Arbeidskrav2;
+﻿using System.Reflection.Metadata.Ecma335;
+
+namespace Arbeidskrav2;
 
 class Program
 {
@@ -39,7 +41,36 @@ class Program
         hotel.GuestRegister.Add(new VipGuest("Prinsesse Ingrid Alexadra", "prinsessen@gmail.com"));
         hotel.GuestRegister.Add(new VipGuest("Prins Sverre Magnus", "prinsmagnus@gmail.com"));
         hotel.GuestRegister.Add(new VipGuest("Mia Mor", "miagrande@meny.no"));
-
+        
+        
+        //Bookinger
+        hotel.CreateBooking("G010",
+            "302",
+            new DateTime(2026,04,04),
+            new DateTime(2026,04,09),
+            new VippsPayment("55 66 44 66"));
+        
+        hotel.CreateBooking("G002",
+            "104",
+            new DateTime(2026,06,08),
+            new DateTime(2026,06,012),
+            new VippsPayment("33 55 66 77"));
+        
+        /*
+        //Gjester med ID
+        foreach (var guest in hotel.GuestRegister)
+        {
+            Console.WriteLine($"{guest.GuestID}  {guest.Name}");
+        }
+        */
+            
+                
+        //Bookinger med ID
+        foreach (var booking in hotel.BookingHistoryRegister)
+        {
+            Console.WriteLine($"\n{booking.BookingID}  {booking.CheckInDate}   {booking.CheckOutDate}");
+        }
+        
         
         // Tests
         RunTest1(hotel);
@@ -87,13 +118,15 @@ class Program
                 case 2:
                     CreateBooking(hotel);
                     break;
-                /*
+                
                 case 3:
                     CheckIn(hotel);
                     break;
+                
                 case 4:
                     CheckOut(hotel);
                     break;
+                /*
                 case 5:
                     ShowBookings(hotel);
                     break;
@@ -266,9 +299,7 @@ class Program
             Console.WriteLine($"Bonus test FAILED");
         }
     }
-
-
-
+    
     static void ShowRooms(Hotel hotel)
     {
         Console.Write("Enter check-in date (dd.mm.yyyy): ");
@@ -331,25 +362,55 @@ class Program
         hotel.CreateBooking(guestId, roomId, checkInDate, checkOutDate, payment);
     }
     
-    /*
+    
     static void CheckIn(Hotel hotel)
     {
+        
+        Console.Write("Welcome! Please enter your BookingID (BK###): ");
+        string inputBookingId = Console.ReadLine();
+        
+
+        foreach (var booking in hotel.BookingHistoryRegister)
+        {
+            if (booking.BookingID == inputBookingId)
+            {
+                booking.CheckIn();
+            }
+        }
+        
     }
 
+    
     static void CheckOut(Hotel hotel)
     {
+        Console.Write("Please enter your BookingID (BK###): ");
+        string inputBookingId = Console.ReadLine();
+        
+        foreach (var booking in hotel.BookingHistoryRegister)
+        {
+            if (booking.BookingID == inputBookingId)
+            {
+                booking.CheckOut();
+                Console.WriteLine("Thank you for your stay!");
+            }
+        }
     }
+    
+    
 
     static void ShowBookings(Hotel hotel)
     {
     }
+    
+    /*
 
     static void RegisterNewGuest(Hotel hotel)
     {
     }
-}*/
-
+    */
 }
+
+
 
 
 

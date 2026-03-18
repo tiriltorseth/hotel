@@ -134,10 +134,6 @@ public class Hotel
             
         }
         
-        
-
-
-        
         if (guest is RegularGuest regularGuest)
         {
             Console.WriteLine($"\n------------------------------------------------------------" +

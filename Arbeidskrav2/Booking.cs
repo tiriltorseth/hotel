@@ -95,11 +95,7 @@ public class Booking
         {
             throw new ArgumentException($"{bookingID} has not been paid. Please pay before checking in.");
         }
-
-        if (DateTime.Today < CheckInDate)
-        {
-            throw new ArgumentException("Cannot check in before the checkin date");
-        }
+        
         
         if (room.IsAvailable is false)
         {
