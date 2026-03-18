@@ -116,7 +116,6 @@ public class Hotel
             return null;
         }
         
-        
         bool isRoomBooked = BookingHistoryRegister.Any(b =>
             b.room.RoomID == roomID &&
             b.CheckOutDate > checkIn &&
@@ -128,8 +127,6 @@ public class Hotel
             Console.WriteLine($"Room [{roomID}] is already booked in this period.");
             return null;
         }
-        
-        
         
         var booking = new Booking(room, guest, checkIn, checkOut, payable);
         
@@ -190,7 +187,7 @@ public class Hotel
             return;
         }
     
-        Console.WriteLine($"Bookings for Guest {guest.Name} [{guest.GuestID}]:");
+        Console.WriteLine($"\nBookings for guest {guest.Name} [{guest.GuestID}]:");
         Console.WriteLine("--------------------------------------------------------");
         
         foreach (var booking in guest.ActiveBookings)
@@ -198,8 +195,8 @@ public class Hotel
             Console.WriteLine($"\nBooking ID: {booking.BookingID}" +
                               $"\nRoom ID: {booking.room.RoomID}" +
                               $"\nRoom type: {booking.room.RoomType}" +
-                              $"\nCheck in: {booking.CheckInDate:dd.mm.yyyy}" +
-                              $"\nCheck out: {booking.CheckOutDate:dd.mm.yyyy}" +
+                              $"\nCheck in: {booking.CheckInDate:dd.MM.yyyy}" +
+                              $"\nCheck out: {booking.CheckOutDate:dd.MM.yyyy}" +
                               $"\nTotal Price: {booking.CalculateTotalPrice()}" +
                               $"\n");
             

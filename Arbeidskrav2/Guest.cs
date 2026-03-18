@@ -39,9 +39,7 @@ public abstract class Guest
             
             if (!(Regex.IsMatch(value, checkEmail)))
                 Console.WriteLine("Invalid email!");
-           
             
-                
             email = value;
         }
     }

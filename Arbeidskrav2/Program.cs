@@ -1,4 +1,5 @@
 ﻿using System.Reflection.Metadata.Ecma335;
+using System.Text.RegularExpressions;
 
 namespace Arbeidskrav2;
 
@@ -74,11 +75,12 @@ class Program
             Console.WriteLine(" 4. Check out");
             Console.WriteLine(" 5. Show my bookings");
             Console.WriteLine(" 6. Register new guest");
+            Console.WriteLine(" 7. Cancel booking");
             Console.WriteLine(" 0. Exit");
 
 
-            Console.Write("Choose option (1-6): ");
-            int menuOptions = GetValidChoice(0, 6);
+            Console.Write("Choose option (1-7): ");
+            int menuOptions = GetValidChoice(0, 7);
 
 
             int GetValidChoice(int min, int max)
@@ -119,7 +121,9 @@ class Program
                 case 6:
                     RegisterNewGuest(hotel);
                     break;
-
+                case 7:
+                    CancelBooking(hotel);
+                    break;
                 case 0:
                     Console.WriteLine("\nProgram closed. Bye!");
                     return;
@@ -311,16 +315,41 @@ class Program
         Console.Write("Enter GuestId: ");
         string guestId = Console.ReadLine();
 
+        if (guestId == null)
+        {
+            Console.WriteLine("GuestId is null");
+            return;
+
+        }
+
         Console.Write($"Enter RoomId: ");
         string roomId = Console.ReadLine();
+        
+        if (roomId == null)
+        {
+            Console.WriteLine("RoomId is null");
+            return;
+        }
 
         Console.Write($"Enter check-in date (dd.mm.yyyy): ");
         string checkIn = Console.ReadLine();
         DateTime checkInDate = DateTime.Parse(checkIn);
+        
+        if (checkIn == null)
+        {
+            Console.WriteLine("Check in date is null");
+            return;
+        }
 
         Console.Write($"Enter check-out date (dd.mm.yyyy): ");
         string checkOut = Console.ReadLine();
         DateTime checkOutDate = DateTime.Parse(checkOut);
+        
+        if (checkOut == null)
+        {
+            Console.WriteLine("Check in date is null");
+            return;
+        }
 
         Console.Write("Payment method (1:Card Payment, 2:Vipps): ");
         string paymentMethod = Console.ReadLine();
@@ -347,6 +376,12 @@ class Program
         else
         {
             Console.WriteLine($"Invalid payment method. Try again.");
+            return;
+        }
+
+        if (checkOutDate <= checkInDate)
+        {
+            Console.WriteLine("\nCheckout date can not before checkin date. Please try again.");
             return;
         }
 
@@ -408,7 +443,7 @@ class Program
 
 
     static void CheckOut(Hotel hotel)
-        {
+    {
             
             Console.Write("Please enter your BookingID (BK###): ");
             string inputBookingId = Console.ReadLine();
@@ -423,60 +458,82 @@ class Program
             }
 
             booking.CheckOut();
-            /*
-            Console.Write("Please enter your BookingID (BK###): ");
-            string inputBookingId = Console.ReadLine();
-
-            foreach (var booking in hotel.BookingHistoryRegister)
-            {
-                if (booking.BookingID == inputBookingId)
-                {
-                    booking.CheckOut();
-                    Console.WriteLine("Thank you for your stay!");
-                }
-            }
-            */
-        }
+    }
 
 
-        static void ShowBookings(Hotel hotel)
-        {
+    static void ShowBookings(Hotel hotel)
+    {
             Console.Write("Please enter your GuestId: ");
             string inputGuestId = Console.ReadLine();
 
             hotel.GetGuestBookings(inputGuestId);
+    }
+
+
+    static void RegisterNewGuest(Hotel hotel)
+    {
+        Console.Write("Name: ");
+        string name = Console.ReadLine();
+
+        if (name == null || (!(Regex.IsMatch(name, @"^[a-zA-Z]+$"))))
+        {
+            Console.WriteLine("Invalid name");
+                return;
         }
 
+        Console.Write("Email: ");
+        string email = Console.ReadLine();
 
-        static void RegisterNewGuest(Hotel hotel)
+        if (string.IsNullOrWhiteSpace(email))
         {
-            Console.Write("Name: ");
-            string name = Console.ReadLine();
-
-            Console.Write("Email: ");
-            string email = Console.ReadLine();
-
-            Console.Write("Do your wish to be VIP guest and earn loyalty points? (Yes/No): ");
-            string yesOrNo = Console.ReadLine();
-
-            if (yesOrNo == "Yes" || yesOrNo == "yes")
-            {
-                var guest = new VipGuest(name, email);
-                hotel.RegisterGuest(guest);
-
-            }
-            else if (yesOrNo == "No" || yesOrNo == "no")
-            {
-                var guest = new RegularGuest(name, email);
-                hotel.RegisterGuest(guest);
-            }
-            else
-            {
-                Console.WriteLine($"Invalid input. Try again.");
-            }
-
+            Console.WriteLine("Email can not be empty.");
+            return;
+        }
         
+        string checkEmail = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+
+        if (!(Regex.IsMatch(email, checkEmail)))
+        {
+            Console.WriteLine("Invalid email!");
+            return;
+        }
+
+        Console.Write("Do your wish to be VIP guest and earn loyalty points? (Yes/No): ");
+        string yesOrNo = Console.ReadLine();
+
+        if (yesOrNo == "Yes" || yesOrNo == "yes")
+        {
+            var guest = new VipGuest(name, email);
+            hotel.RegisterGuest(guest);
+
+        }
+        else if (yesOrNo == "No" || yesOrNo == "no")
+        {
+            var guest = new RegularGuest(name, email);
+            hotel.RegisterGuest(guest);
+        }
+        else
+        {
+            Console.WriteLine($"Invalid input. Try again.");
+        }
+    }
+
+    static void CancelBooking(Hotel hotel)
+    {
+        Console.Write("Please enter your BookingID (BK###): ");
+        string inputBookingId = Console.ReadLine();
         
+        var booking = hotel.BookingHistoryRegister
+            .FirstOrDefault(b => b.BookingID == inputBookingId);
+
+        if (booking == null)
+        {
+            Console.WriteLine("Booking not found");
+            return;
+        }
+
+        hotel.CancelBooking(booking.BookingID);
+
     }
 }   
 

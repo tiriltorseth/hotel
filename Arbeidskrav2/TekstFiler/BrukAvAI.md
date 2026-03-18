@@ -1206,12 +1206,29 @@ Fjern denne:
 Legg inn riktig datosjekk:
     checkIn < booking.CheckOutDate && checkOut > booking.CheckInDate
 
-
-
-
 **Prompt:**
 
+hvorfor får jeg ikke tak i cancel booking hger? static void CancelBooking(Hotel hotel) { Console.Write("Please enter your BookingID (BK###): "); string inputBookingId = Console.ReadLine(); var booking = hotel.BookingHistoryRegister .FirstOrDefault(b => b.BookingID == inputBookingId); if (booking == null) { Console.WriteLine("Booking not found"); return; } booking.CancelBooking();
+
 **Svar:**
+
+🔴 Problemet
+
+Du gjør:
+
+    booking.CancelBooking();
+
+👉 Men i oppgaven din er CancelBooking en metode i Hotel, ikke i Booking.
+
+Fra kravene:
+
+CancelBooking(string bookingId) ligger i Hotel-klassen
+
+✅ Riktig måte
+
+Du skal kalle:
+
+    hotel.CancelBooking(inputBookingId);
 
 **Prompt:**
 
