@@ -5,9 +5,19 @@ public class Booking
     private static int bookingCounter = 0;
     private readonly string bookingID;
 
+    /// <summary>
+    /// Rom objekt som tar inn rom
+    /// </summary>
     public Room room { get; }
+    
+    /// <summary>
+    /// Gjest objekt som tar inn gjest
+    /// </summary>
     public Guest guest { get; }
     
+    /// <summary>
+    /// string som oppretter bookingID og henter data fra privat felt
+    /// </summary>
     public string BookingID => bookingID;
 
     private DateTime checkInDate;
@@ -15,7 +25,9 @@ public class Booking
 
     private IPayable paymentMethod;
 
-
+    /// <summary>
+    /// Dato objekt for innsjekk
+    /// </summary>
     public DateTime CheckInDate
     {
         get { return checkInDate; }
@@ -25,6 +37,9 @@ public class Booking
         }
     }
 
+    /// <summary>
+    /// Dato objekt for utsjekk
+    /// </summary>
     public DateTime CheckOutDate
     {
         get { return checkOutDate; }
@@ -37,6 +52,12 @@ public class Booking
         }
     }
 
+    /// <summary>
+    /// Oppretter booking og tar inn rom objekt, gjeste objekt, sjekk inn objekt, sjekkut objekt og IPayable betalingsmetode
+    /// Sjekker at objektene ikke er null
+    /// Setter BookingId til å autogenereres
+    /// Kaller på processpayment for å kjøre simulert betaling
+    /// </summary>
     public Booking(Room room, Guest guest, DateTime checkInDate, DateTime checkOutDate, IPayable payment)
     {
         if (room == null) throw new ArgumentNullException(nameof(room));
@@ -70,8 +91,16 @@ public class Booking
         }
     }
     
+    /// <summary>
+    /// Bool som sjekker om bookingen er betalt 
+    /// </summary>
     public bool IsPaid { get; private set; } = false;
     
+    /// <summary>
+    /// Regner ut sum av netter og eventuell rabatt ved VipGjest
+    /// Finner først antall dager og regner deretter ut prisen
+    /// returnerer endelig pris
+    /// </summary>
     public decimal CalculateTotalPrice()
     {
         if (CheckOutDate <= CheckInDate)
@@ -89,6 +118,10 @@ public class Booking
         return finalPrice;
     }
 
+    /// <summary>
+    /// Sjekker inn bookingen
+    /// Sjekker om gjest har betalt og at rommet er ledig, før rommet blir satt til opptatt
+    /// </summary>
     public void CheckIn()
     {
         
@@ -105,7 +138,11 @@ public class Booking
         room.IsAvailable = false;
         Console.WriteLine($"Booking [{bookingID}] has been checked in!");
     }
-
+    
+    /// <summary>
+    /// Sjekker ut en gjest etter et opphold
+    /// Sjekker først om rommet er ledig før rommet blir satt til ledig og gjesten er sjekket ut
+    /// </summary>
     public void CheckOut()
     {
         if (room.IsAvailable)

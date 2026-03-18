@@ -5,9 +5,12 @@ namespace Arbeidskrav2;
 
 class Program
 {
+    /// <summary>
+    /// Main metode som kjører hotellet
+    /// </summary>
     static void Main(string[] args)
     {
-        // Creating hotel objekt
+        // Lager hotel objekt
         var hotel = new Hotel();
 
         // Single Room
@@ -44,7 +47,7 @@ class Program
         hotel.GuestRegister.Add(new VipGuest("Mia Mor", "miagrande@meny.no"));
 
 
-        //Bookinger
+        //Bookings
         hotel.CreateBooking("G010",
             "302",
             new DateTime(2026, 04, 04),
@@ -131,6 +134,9 @@ class Program
         }
     }
 
+    /// <summary>
+    /// Test som sørger for at programmet returnerer korrekt pris med rabatt
+    /// </summary>
     static void RunTest1(Hotel hotel)
     {
         Console.WriteLine("=========== TESTER ===========");
@@ -147,6 +153,9 @@ class Program
         }
     }
 
+    /// <summary>
+    /// Test som beregner riktig pris for romtype
+    /// </summary>
     static void RunTest2(Hotel hotel)
     {
         var guest = new RegularGuest("Test", "test@test.com");
@@ -172,6 +181,9 @@ class Program
     }
 
 
+    /// <summary>
+    /// Test som gir feilmld dersom rommet er opptatt
+    /// </summary>
     static void RunTest3()
     {
         var testHotel = new Hotel();
@@ -208,7 +220,9 @@ class Program
         }
     }
 
-
+    /// <summary>
+    /// Test som setter sjekker at rommet er ledig etter checkout
+    /// </summary>
     static void RunTest4()
     {
         var testHotel2 = new Hotel();
@@ -241,6 +255,9 @@ class Program
     }
 
 
+    /// <summary>
+    /// Tester at regular guest ikke kan ha mer enn 3 bookinger
+    /// </summary>
     static void BonusTest1()
     {
         var testHotel3 = new Hotel();
@@ -293,6 +310,9 @@ class Program
     }
 
 
+    /// <summary>
+    /// Metode som viser alle tilgjengelige rom innenfor et intervall
+    /// </summary>
 
     static void ShowRooms(Hotel hotel)
     {
@@ -310,6 +330,10 @@ class Program
     }
 
 
+    /// <summary>
+    /// Booking blir opprettet og verdeiene sjekkes at er skrevet inn korrekt
+    /// Skriver ut booking til slutt
+    /// </summary>
     static void CreateBooking(Hotel hotel)
     {
         Console.Write("Enter GuestId: ");
@@ -423,6 +447,9 @@ class Program
     }
 
 
+    /// <summary>
+    /// Sjekker inn booking
+    /// </summary>
     static void CheckIn(Hotel hotel)
     {
         Console.Write("Welcome! Please enter your BookingID (BK###): ");
@@ -441,6 +468,9 @@ class Program
         
     }
 
+    /// <summary>
+    /// Sjekker ut booking
+    /// </summary>
 
     static void CheckOut(Hotel hotel)
     {
@@ -461,6 +491,9 @@ class Program
     }
 
 
+    /// <summary>
+    /// Viser alle bookings for en spesifikk gjest
+    /// </summary>
     static void ShowBookings(Hotel hotel)
     {
             Console.Write("Please enter your GuestId: ");
@@ -470,6 +503,9 @@ class Program
     }
 
 
+    /// <summary>
+    /// Registrerer en ny gjest
+    /// </summary>
     static void RegisterNewGuest(Hotel hotel)
     {
         Console.Write("Name: ");
@@ -518,6 +554,9 @@ class Program
         }
     }
 
+    /// <summary>
+    /// Lar gjesten kansellere bookings
+    /// </summary>
     static void CancelBooking(Hotel hotel)
     {
         Console.Write("Please enter your BookingID (BK###): ");
