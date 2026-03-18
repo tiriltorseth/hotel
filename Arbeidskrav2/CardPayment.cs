@@ -5,6 +5,10 @@ public class CardPayment : IPayable
     private string cardNumber;
     private string cardType;
 
+    /// <summary>
+    /// Kort nummer lagret i property
+    /// Sjekker at kortnummer er mer enn 4 tall langt
+    /// </summary>
     public string CardNumber
     {
         get { return cardNumber; }
@@ -15,7 +19,11 @@ public class CardPayment : IPayable
             cardNumber = value;
         }
     }
-
+    
+    
+    /// <summary>
+    /// Kort type lagret i property, der lengden blir sjekket
+    /// </summary>
     public string CardType
     {
         get { return cardType; }
@@ -31,17 +39,26 @@ public class CardPayment : IPayable
         }
     }
 
+    /// <summary>
+    /// Oppretter ny kort betaling som tar inn kortnummer og type
+    /// </summary>
     public CardPayment(string cardNumber, string cardType)
     {
         this.CardNumber = cardNumber;
         this.CardType = cardType;
     }
 
+    /// <summary>
+    /// Simulering av betaling som alltid er true
+    /// </summary>
     public bool ProcessPayment(decimal amount)
     {
         return true;
     }
     
+    /// <summary>
+    /// Skriver ut informasjon om betalingen
+    /// </summary>
     public string GetPaymentInfo()
     {
         var showCardNumber = CardNumber.Substring(CardNumber.Length - 4, 4);
