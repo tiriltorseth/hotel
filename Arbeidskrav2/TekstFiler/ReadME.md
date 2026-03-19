@@ -43,8 +43,6 @@ and write an error message. Choose 0 to exit program.
 ### Use of AI
 To view all AI used in the assignment, see file BrukAvAI.md
 
-Se fil BrukAvAI.md for dokumentasjon på AI brukt i oppgaven
-
 ### Reflekstions
 (Edited by ChatGPT to ensure proper flow and wording)
 
