@@ -136,6 +136,8 @@ class Program
 
     /// <summary>
     /// Test som sørger for at programmet returnerer korrekt pris med rabatt
+    /// Oppretter vipgjest og setter basepris til 1000
+    /// sjekker om resultat er forventer og skriver ut
     /// </summary>
     static void RunTest1(Hotel hotel)
     {
@@ -155,6 +157,8 @@ class Program
 
     /// <summary>
     /// Test som beregner riktig pris for romtype
+    /// oppretter ny gjest og nytt rom og ny booking
+    /// Sjekker om metoden returnerer forventet pris og skriver ut
     /// </summary>
     static void RunTest2(Hotel hotel)
     {
@@ -183,7 +187,9 @@ class Program
 
     /// <summary>
     /// Test som gir feilmld dersom rommet er opptatt
-    /// </summary>
+    /// oppretter hotel, rom, gjest, betaling og legger til i listene
+    /// Oppretter to like bookinger og sjekker om booking2 blir stoppet av metoden og ikke eksisterer
+    /// Skriver ut bekreftele
     static void RunTest3()
     {
         var testHotel = new Hotel();
@@ -222,6 +228,9 @@ class Program
 
     /// <summary>
     /// Test som setter sjekker at rommet er ledig etter checkout
+    /// Oppretter hotel rom, gjest, betaling og legger til i lister
+    /// Oppretter booking og sjekker inn og sjekker ut
+    /// Sjekker om rommet er satt til true igjen etter utsjekk og skriver ut
     /// </summary>
     static void RunTest4()
     {
@@ -257,6 +266,9 @@ class Program
 
     /// <summary>
     /// Tester at regular guest ikke kan ha mer enn 3 bookinger
+    /// oppretter hotel, rom, gjest, payment og legger til i lister
+    /// Oppretter 4 bookinger og kaller på metoden CanBook som stopper gjesten i å ha mer enn 3 bookinger
+    /// Skriver ut bekreftelse
     /// </summary>
     static void BonusTest1()
     {
@@ -332,6 +344,7 @@ class Program
 
     /// <summary>
     /// Booking blir opprettet og verdeiene sjekkes at er skrevet inn korrekt
+    /// Sjekker også at innsjekk er før utsjekk
     /// Skriver ut booking til slutt
     /// </summary>
     static void CreateBooking(Hotel hotel)
@@ -448,7 +461,7 @@ class Program
 
 
     /// <summary>
-    /// Sjekker inn booking
+    /// Sjekker inn booking og sjekker om den eksisterer
     /// </summary>
     static void CheckIn(Hotel hotel)
     {
@@ -469,7 +482,7 @@ class Program
     }
 
     /// <summary>
-    /// Sjekker ut booking
+    /// Sjekker ut booking og sjekker om den eksisterer
     /// </summary>
 
     static void CheckOut(Hotel hotel)
@@ -505,6 +518,8 @@ class Program
 
     /// <summary>
     /// Registrerer en ny gjest
+    /// Sjekker at alle verdier er skrevet inn riktig
+    /// Skriver ut den nye registrerte gjesten
     /// </summary>
     static void RegisterNewGuest(Hotel hotel)
     {
@@ -556,6 +571,7 @@ class Program
 
     /// <summary>
     /// Lar gjesten kansellere bookings
+    /// Sjekker om booking eksisterer før den fjernes
     /// </summary>
     static void CancelBooking(Hotel hotel)
     {
