@@ -2,16 +2,27 @@ using System.Text.RegularExpressions;
 
 namespace Arbeidskrav2;
 
+/// <summary>
+/// Abstrakt klasse for objektet gjest
+/// </summary>
 public abstract class Guest
 {
     private static int guestCounter = 0;
     private readonly string guestID;
     
+    /// <summary>
+    /// Property som setter og returnerer gjesteID
+    /// </summary>
     public string GuestID{ get { return guestID; } }
 
     private string name;
     private string email;
 
+    /// <summary>
+    /// Property for navn på gjesten
+    /// Sjekker at navn ikke kan være null og lenger enn 2 karakterer
+    /// Setter verdien til det private feltet name
+    /// </summary>
     public string Name
     {
         get { return name; }
@@ -27,6 +38,13 @@ public abstract class Guest
             name = value;
         }
     }
+    
+    /// <summary>
+    /// Property for mailadressen til gjesten
+    /// Bruker regex for å sørge for at mail har bla. @ og . i stringen
+    /// Sjekker at det ikke kan være null
+    /// Setter verdien til den private stringen email
+    /// </summary>
     public string Email
     {
         get { return email; }
@@ -43,11 +61,22 @@ public abstract class Guest
             email = value;
         }
     }
-    
+    /// <summary>
+    /// Abstrakt property for max antall bookinger for hver gjest
+    /// Settes av typen gjest i subklasser
+    /// </summary>
     public abstract int MaxBookings { get; }
     
+    /// <summary>
+    /// Property for liste som lagrer alle aktive bookings for en gjest
+    /// </summary>
     public List<Booking> ActiveBookings { get; }
 
+    /// <summary>
+    /// Oppretter ny gjest med navn, mail og gjeste ID
+    /// ID blir autogenerert og har formatet G###
+    /// Oppretter nytt listeobjekt ActiveBookings
+    /// </summary>
     protected Guest(string name, string email)
     {
         guestCounter++;
@@ -57,9 +86,15 @@ public abstract class Guest
         ActiveBookings = new List<Booking>(); 
     }
     
-
+    /// <summary>
+    /// Abstrakt metode som skal regne ut eventuelle rabatter
+    /// Tar inn basePrice, som er prisen per natt for et rom
+    /// </summary>
     public abstract decimal GetDiscount(decimal basePrice);
     
+    /// <summary>
+    /// Frivillig lagt inn abstract bool som sjekker om gjesten kan booke fler rom eller ikke
+    /// </summary>
     public abstract bool CanBook();
 
 }
