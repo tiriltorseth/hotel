@@ -1,5 +1,6 @@
 # Bruk av AI i Arbeidskrav 2:
 
+***Som i arbeidskrav 1, så er alle filer feilsøkt med AI for å unngå risiko for tullefeil***
 
 ***I dette arbeidskravet har jeg brukt AI mindre til forståelse enn arbeidskrav 1 og mer til debugging. Synes personlig fristen
 på kravene er litt for korte og har ikke fysisk tid til å mauelt debugge alt sammen selv, da jeg fortsatt synes dette er vanskelig
