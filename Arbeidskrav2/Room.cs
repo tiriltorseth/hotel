@@ -2,6 +2,9 @@ using System.Text.RegularExpressions;
 
 namespace Arbeidskrav2;
 
+/// <summary>
+/// Abstrakt klasse for objektet rom
+/// </summary>
 public abstract class Room
 {
     private string roomID;
@@ -11,6 +14,10 @@ public abstract class Room
     private bool isAvailable;
     private int maxGuests;
     
+    /// <summary>
+    /// Propery for romID
+    /// Regex sørger for at id må være tre tall og ikke kan være null
+    /// </summary>
     public string RoomID
     {
         get { return roomID; }
@@ -24,12 +31,19 @@ public abstract class Room
         }
     }
 
+    /// <summary>
+    /// Propety for romtype
+    /// </summary>
     public string RoomType
     {
         get { return roomType; }
         protected set { roomType = value; }
     }
 
+    /// <summary>
+    /// Pris per natt i en decimal
+    /// Sjekker at prisen er mer enn null
+    /// </summary>
     public decimal PricePerNight
     {
         get { return pricePerNight; }
@@ -41,6 +55,9 @@ public abstract class Room
         }
     }
     
+    /// <summary>
+    /// Bool som sjekker om rommet er tilgjengelig eller ikke
+    /// </summary>
     public bool IsAvailable
     {
         get { return isAvailable; }
@@ -48,6 +65,9 @@ public abstract class Room
     }
 
     
+    /// <summary>
+    /// Int som setter max antall gjester per rom
+    /// </summary>
     public int MaxGuests
     {
         get { return maxGuests; }
@@ -55,6 +75,10 @@ public abstract class Room
     }
 
 
+    /// <summary>
+    /// Oppretter objektet rom og tar inn roomID, romtype, pris per natt og max antall gjester
+    /// Setter rommet til tilgjengelig når objektet opprettes
+    /// </summary>
     protected Room(string roomID, string roomType, decimal pricePerNight, int maxGuests)
     {
         this.RoomID = roomID;
@@ -64,6 +88,9 @@ public abstract class Room
         this.MaxGuests = maxGuests;
     }
 
+    /// <summary>
+    /// Abstrakt metode for å skrive ut rominfo
+    /// </summary>
     public abstract void DisplayRoomInfo();
     
 }
